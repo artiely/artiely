@@ -1,0 +1,620 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>前端面试题汇总-css-2 | Artiely' blog</title>
+    <meta name="description" content="随便玩玩">
+    <link rel="stylesheet" href="/assets/style.514056dd.css">
+    <link rel="modulepreload" href="/assets/Home.e48ff0e9.js">
+    <link rel="modulepreload" href="/assets/lottie.42100ed3.js">
+    <link rel="modulepreload" href="/assets/lightgallery.es5.f43f3494.js">
+    <link rel="modulepreload" href="/assets/TextPlugin.8595634c.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="modulepreload" href="/assets/post_2020_2020-8-28-frontend-css2.md.891ecf04.lean.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2707633_ayah6j2r7wi.css">
+    <script type="text/javascript" src="/js/twikoo.js"></script>
+    <meta name="twitter:title" content="前端面试题汇总-css-2 | Artiely&#39; blog">
+    <meta property="og:title" content="前端面试题汇总-css-2 | Artiely&#39; blog">
+  </head>
+  <body>
+    <div id="app"><!--[--><!----><!----><div class="content dark" style="height:100%;"><div style="position:relative;"><div><h1 id="前端面试题汇总-css-2"><a class="header-anchor" href="#前端面试题汇总-css-2" aria-hidden="true">#</a> 前端面试题汇总-css-2</h1><h1 id="7-种方法解决移动端-retina-屏幕-1px-边框问题"><a class="header-anchor" href="#7-种方法解决移动端-retina-屏幕-1px-边框问题" aria-hidden="true">#</a> 7 种方法解决移动端 Retina 屏幕 1px 边框问题</h1><h3 id="造成边框变粗的原因"><a class="header-anchor" href="#造成边框变粗的原因" aria-hidden="true">#</a> 造成边框变粗的原因</h3><p>其实这个原因很简单，因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。</p><blockquote><p>devicePixelRatio的官方的定义为：设备物理像素和设备独立像素的比例，也就是 devicePixelRatio = 物理像素 / 独立像素。</p></blockquote><h3 id="解决边框变粗的6种办法"><a class="header-anchor" href="#解决边框变粗的6种办法" aria-hidden="true">#</a> 解决边框变粗的6种办法</h3><h2 id="1-05px边框"><a class="header-anchor" href="#1-05px边框" aria-hidden="true">#</a> 1、0.5px边框</h2><p>在2014年的 WWDC，“设计响应的Web体验” 一讲中，Ted O’Connor 讲到关于“retinahairlines”（retina 极细的线）：在retina屏上仅仅显示1物理像素的边框，开发者应该如何处理呢。</p><p>他们曾介绍到 iOS 8 和 OS X Yosemite 即将支持 0.5px 的边框：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829093617.png" alt=""></p><p>0.5px边框</p><p>额的神呐！so easy! 果真如此吗？这样还不够（WWDC幻灯片通常是“唬人”的），但是相差不多。</p><p>问题是 retina 屏的浏览器可能不认识0.5px的边框，将会把它解释成0px，没有边框。包括 iOS 7 和之前版本，OS X Mavericks 及以前版本，还有 Android 设备。</p><p><strong>解决方案：</strong><br> 解决方案是通过 JavaScript 检测浏览器能否处理0.5px的边框，如果可以，给html标签元素添加个class。</p><div class="language-"><pre><code>if (window.devicePixelRatio &amp;&amp; devicePixelRatio &gt;= 2) {
+var testElem = document.createElement(&#39;div&#39;);
+testElem.style.border = &#39;.5px solid transparent&#39;;
+document.body.appendChild(testElem);
+if (testElem.offsetHeight == 1) {
+document.querySelector(&#39;html&#39;).classList.add(&#39;hairlines&#39;);
+}
+document.body.removeChild(testElem);
+}
+// 脚本应该放在内，如果在里面运行，需要包装 $(document).ready(function() {})
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011494-61014">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="if (window.devicePixelRatio &amp;&amp; devicePixelRatio &gt;= 2) {
+var testElem = document.createElement(&#39;div&#39;);
+testElem.style.border = &#39;.5px solid transparent&#39;;
+document.body.appendChild(testElem);
+if (testElem.offsetHeight == 1) {
+document.querySelector(&#39;html&#39;).classList.add(&#39;hairlines&#39;);
+}
+document.body.removeChild(testElem);
+}
+// 脚本应该放在内，如果在里面运行，需要包装 $(document).ready(function() {})
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011494-61014" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>然后，极细的边框样式就容易了：</p><div class="language-"><pre><code>div {
+border: 1px solid #bbb;
+}
+.hairlines div {
+border-width: 0.5px;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011494-63158">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="div {
+border: 1px solid #bbb;
+}
+.hairlines div {
+border-width: 0.5px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011494-63158" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><h3 id="2-使用border-image实现"><a class="header-anchor" href="#2-使用border-image实现" aria-hidden="true">#</a> 2、使用border-image实现</h3><p>准备一张符合你要求的border-image：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829093735.png" alt=""></p><p>底部边框</p><p>样式设置：</p><div class="language-"><pre><code>.border-bottom-1px {
+border-width: 0 0 1px 0;
+-webkit-border-image: url(linenew.png) 0 0 2 0 stretch;
+border-image: url(linenew.png) 0 0 2 0 stretch;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011494-81530">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".border-bottom-1px {
+border-width: 0 0 1px 0;
+-webkit-border-image: url(linenew.png) 0 0 2 0 stretch;
+border-image: url(linenew.png) 0 0 2 0 stretch;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011494-81530" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>上文是把border设置在边框的底部，所以使用的图片是2px高，上部的1px颜色为透明，下部的1px使用视觉规定的border的颜色。如果边框底部和顶部同时需要border，可以使用下面的border-image：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829093659.png" alt=""></p><p>上下边框</p><p>样式设置：</p><div class="language-"><pre><code>.border-image-1px {
+border-width: 1px 0;
+-webkit-border-image: url(linenew.png) 2 0 stretch;
+border-image: url(linenew.png) 2 0 stretch;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-51161">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".border-image-1px {
+border-width: 1px 0;
+-webkit-border-image: url(linenew.png) 2 0 stretch;
+border-image: url(linenew.png) 2 0 stretch;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-51161" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>到目前为止，我们已经能在iphone上展现1px border的效果了。但是我们发现这样的方法在非视网膜屏上会出现border显示不出来的现象，于是使用Media Query做了一些兼容，样式设置如下：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">.border-image-1px</span> <span class="token punctuation">{</span>
+<span class="token property">border-bottom</span><span class="token punctuation">:</span> 1px solid #666<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token atrule"><span class="token rule">@media</span> <span class="token keyword">only</span> screen <span class="token keyword">and</span> <span class="token punctuation">(</span><span class="token property">-webkit-min-device-pixel-ratio</span><span class="token punctuation">:</span> 2<span class="token punctuation">)</span></span> <span class="token punctuation">{</span>
+<span class="token selector">.border-image-1px</span> <span class="token punctuation">{</span>
+<span class="token property">border-bottom</span><span class="token punctuation">:</span> none<span class="token punctuation">;</span>
+<span class="token property">border-width</span><span class="token punctuation">:</span> 0 0 1px 0<span class="token punctuation">;</span>
+<span class="token property">-webkit-border-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>../img/linenew.png<span class="token punctuation">)</span></span> 0 0 2 0 stretch<span class="token punctuation">;</span>
+<span class="token property">border-image</span><span class="token punctuation">:</span> <span class="token url"><span class="token function">url</span><span class="token punctuation">(</span>../img/linenew.png<span class="token punctuation">)</span></span> 0 0 2 0 stretch<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-52444">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".border-image-1px {
+border-bottom: 1px solid #666;
+}
+@media only screen and (-webkit-min-device-pixel-ratio: 2) {
+.border-image-1px {
+border-bottom: none;
+border-width: 0 0 1px 0;
+-webkit-border-image: url(../img/linenew.png) 0 0 2 0 stretch;
+border-image: url(../img/linenew.png) 0 0 2 0 stretch;
+}
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-52444" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><p><strong>缺点：</strong></p><ul><li>修改颜色麻烦, 需要替换图片</li><li>圆角需要特殊处理，并且边缘会模糊</li></ul><h3 id="3-使用background-image实现"><a class="header-anchor" href="#3-使用background-image实现" aria-hidden="true">#</a> 3、使用background-image实现</h3><p>background-image 跟border-image的方法一样，你要先准备一张符合你要求的图片。然后将边框模拟在背景上。<br> 样式设置：</p><div class="language-"><pre><code>.background-image-1px {
+background: url(../img/line.png) repeat-x left bottom;
+-webkit-background-size: 100% 1px;
+background-size: 100% 1px;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-15876">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".background-image-1px {
+background: url(../img/line.png) repeat-x left bottom;
+-webkit-background-size: 100% 1px;
+background-size: 100% 1px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-15876" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p><strong>优点：</strong></p><p><strong>缺点：</strong></p><ul><li>修改颜色麻烦, 需要替换图片</li><li>圆角需要特殊处理，并且边缘会模糊</li></ul><h3 id="4-多背景渐变实现"><a class="header-anchor" href="#4-多背景渐变实现" aria-hidden="true">#</a> 4、多背景渐变实现</h3><p>与background-image方案类似，只是将图片替换为css3渐变。设置1px的渐变背景，50%有颜色，50%透明。<br> 样式设置：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">.background-gradient-1px</span> <span class="token punctuation">{</span>
+<span class="token property">background</span><span class="token punctuation">:</span>
+<span class="token function">linear-gradient</span><span class="token punctuation">(</span>180deg<span class="token punctuation">,</span> black<span class="token punctuation">,</span> black 50%<span class="token punctuation">,</span> transparent 50%<span class="token punctuation">)</span> top left / 100% 1px no-repeat<span class="token punctuation">,</span>
+<span class="token function">linear-gradient</span><span class="token punctuation">(</span>90deg<span class="token punctuation">,</span> black<span class="token punctuation">,</span> black 50%<span class="token punctuation">,</span> transparent 50%<span class="token punctuation">)</span> top right / 1px 100% no-repeat<span class="token punctuation">,</span>
+<span class="token function">linear-gradient</span><span class="token punctuation">(</span>0<span class="token punctuation">,</span> black<span class="token punctuation">,</span> black 50%<span class="token punctuation">,</span> transparent 50%<span class="token punctuation">)</span> bottom right / 100% 1px no-repeat<span class="token punctuation">,</span>
+<span class="token function">linear-gradient</span><span class="token punctuation">(</span>-90deg<span class="token punctuation">,</span> black<span class="token punctuation">,</span> black 50%<span class="token punctuation">,</span> transparent 50%<span class="token punctuation">)</span> bottom left / 1px 100% no-repeat<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+<span class="token comment">/* 或者 */</span>
+<span class="token selector">.background-gradient-1px</span><span class="token punctuation">{</span>
+<span class="token property">background</span><span class="token punctuation">:</span> <span class="token function">-webkit-gradient</span><span class="token punctuation">(</span>linear<span class="token punctuation">,</span> left top<span class="token punctuation">,</span> left bottom<span class="token punctuation">,</span> <span class="token function">color-stop</span><span class="token punctuation">(</span>.5<span class="token punctuation">,</span> transparent<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">color-stop</span><span class="token punctuation">(</span>.5<span class="token punctuation">,</span> #c8c7cc<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">to</span><span class="token punctuation">(</span>#c8c7cc<span class="token punctuation">)</span><span class="token punctuation">)</span> left bottom repeat-x<span class="token punctuation">;</span>
+<span class="token property">background-size</span><span class="token punctuation">:</span> 100% 1px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-72443">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".background-gradient-1px {
+background:
+linear-gradient(180deg, black, black 50%, transparent 50%) top left / 100% 1px no-repeat,
+linear-gradient(90deg, black, black 50%, transparent 50%) top right / 1px 100% no-repeat,
+linear-gradient(0, black, black 50%, transparent 50%) bottom right / 100% 1px no-repeat,
+linear-gradient(-90deg, black, black 50%, transparent 50%) bottom left / 1px 100% no-repeat;
+}
+/* 或者 */
+.background-gradient-1px{
+background: -webkit-gradient(linear, left top, left bottom, color-stop(.5, transparent), color-stop(.5, #c8c7cc), to(#c8c7cc)) left bottom repeat-x;
+background-size: 100% 1px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-72443" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h3 id="5-使用box-shadow模拟边框"><a class="header-anchor" href="#5-使用box-shadow模拟边框" aria-hidden="true">#</a> 5、使用box-shadow模拟边框</h3><p>利用css 对阴影处理的方式实现0.5px的效果<br> 样式设置：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">.box-shadow-1px</span> <span class="token punctuation">{</span>
+<span class="token property">box-shadow</span><span class="token punctuation">:</span> inset 0px -1px 1px -1px #c8c7cc<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-82998">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".box-shadow-1px {
+box-shadow: inset 0px -1px 1px -1px #c8c7cc;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-82998" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p><strong>优点：</strong></p><p><strong>缺点：</strong></p><h3 id="6-viewport-rem-实现"><a class="header-anchor" href="#6-viewport-rem-实现" aria-hidden="true">#</a> 6、viewport + rem 实现</h3><p>同时通过设置对应viewport的rem基准值，这种方式就可以像以前一样轻松愉快的写1px了。<br> 在devicePixelRatio = 2 时，输出viewport：</p><div class="language-"><pre><code>在devicePixelRatio = 3 时，输出viewport：
+​```html
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-56733">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="在devicePixelRatio = 3 时，输出viewport：
+​```html
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-56733" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>这种兼容方案相对比较完美，适合新的项目，老的项目修改成本过大。<br> 对于这种方案，可以看看<a href="https://github.com/amfe/article/issues/17" target="_blank" rel="noopener noreferrer">《使用Flexible实现手淘H5页面的终端适配》</a><br><strong>优点：</strong></p><p><strong>缺点：</strong></p><h3 id="7-伪类-transform-实现"><a class="header-anchor" href="#7-伪类-transform-实现" aria-hidden="true">#</a> 7、伪类 + transform 实现</h3><p>对于老项目，有没有什么办法能兼容1px的尴尬问题了，个人认为伪类+transform是比较完美的方法了。原理是把原先元素的 border 去掉，然后利用 :before 或者 :after 重做 border ，并 transform 的 scale 缩小一半，原先的元素相对定位，新做的 border 绝对定位。</p><p>单条border样式设置：</p><div class="language-"><pre><code>.scale-1px{
+position: relative;
+border:none;
+}
+.scale-1px:after{
+content: &#39;&#39;;
+position: absolute;
+bottom: 0;
+background: #000;
+width: 100%;
+height: 1px;
+-webkit-transform: scaleY(0.5);
+transform: scaleY(0.5);
+-webkit-transform-origin: 0 0;
+transform-origin: 0 0;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-83695">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".scale-1px{
+position: relative;
+border:none;
+}
+.scale-1px:after{
+content: &#39;&#39;;
+position: absolute;
+bottom: 0;
+background: #000;
+width: 100%;
+height: 1px;
+-webkit-transform: scaleY(0.5);
+transform: scaleY(0.5);
+-webkit-transform-origin: 0 0;
+transform-origin: 0 0;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-83695" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div><p>四条boder样式设置:</p><div class="language-"><pre><code>.scale-1px{
+position: relative;
+margin-bottom: 20px;
+border:none;
+}
+.scale-1px:after{
+content: &#39;&#39;;
+position: absolute;
+top: 0;
+left: 0;
+border: 1px solid #000;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+width: 200%;
+height: 200%;
+-webkit-transform: scale(0.5);
+transform: scale(0.5);
+-webkit-transform-origin: left top;
+transform-origin: left top;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011495-87485">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".scale-1px{
+position: relative;
+margin-bottom: 20px;
+border:none;
+}
+.scale-1px:after{
+content: &#39;&#39;;
+position: absolute;
+top: 0;
+left: 0;
+border: 1px solid #000;
+-webkit-box-sizing: border-box;
+box-sizing: border-box;
+width: 200%;
+height: 200%;
+-webkit-transform: scale(0.5);
+transform: scale(0.5);
+-webkit-transform-origin: left top;
+transform-origin: left top;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011495-87485" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br></div></div><p>最好在使用前也判断一下，结合 JS 代码，判断是否 Retina 屏：</p><div class="language-"><pre><code>if(window.devicePixelRatio &amp;&amp; devicePixelRatio &gt;= 2){
+document.querySelector(&#39;ul&#39;).className = &#39;scale-1px&#39;;
+}
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011498-245">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="if(window.devicePixelRatio &amp;&amp; devicePixelRatio &gt;= 2){
+document.querySelector(&#39;ul&#39;).className = &#39;scale-1px&#39;;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011498-245" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p><strong>优点：</strong></p><ul><li>所有场景都能满足</li><li>支持圆角(伪类和本体类都需要加border-radius)</li></ul><p><strong>缺点：</strong></p><ul><li>对于已经使用伪类的元素(例如clearfix)，可能需要多层嵌套</li></ul><h2 id="传统布局"><a class="header-anchor" href="#传统布局" aria-hidden="true">#</a> 传统布局</h2><p>圣杯布局和双飞翼布局是前端工程师需要日常掌握的重要布局方式。两者的功能相同，都是为了实现一个<strong>两侧宽度固定，中间宽度自适应的三栏布局</strong>。</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829095956.png" alt=""></p><p>圣杯布局与双飞翼布局</p><p>圣杯布局来源于文章<a href="https://alistapart.com/article/holygrail" target="_blank" rel="noopener noreferrer">In Search of the Holy Grail</a>，而双飞翼布局来源于淘宝UED。虽然两者的实现方法略有差异，不过都遵循了以下要点：</p><ul><li>两侧宽度固定，中间宽度自适应</li><li>中间部分在DOM结构上优先，以便先行渲染</li><li>允许三列中的任意一列成为最高列</li><li>只需要使用一个额外的``标签</li></ul><p>下面我将依次介绍圣杯布局和双飞翼布局的实现方法，并在最后根据个人思考对原有方法做出一些修改，给出其它一些可行的方案。</p><h2 id="圣杯布局"><a class="header-anchor" href="#圣杯布局" aria-hidden="true">#</a> 圣杯布局</h2><h3 id="1-dom结构"><a class="header-anchor" href="#1-dom结构" aria-hidden="true">#</a> 1. DOM结构</h3><div class="language-xml line-numbers-mode"><pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>header<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>container<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>center<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>left<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>right<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>footer<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011498-13118">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&lt;div id=&quot;header&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;container&quot;&gt;
+  &lt;div id=&quot;center&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;left&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;right&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+&lt;div id=&quot;footer&quot;&gt;&lt;/div&gt;
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011498-13118" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>首先定义出整个布局的DOM结构，主体部分是由<code>container</code>包裹的<code>center</code>,<code>left</code>,<code>right</code>三列，其中<code>center</code>定义在最前面。</p><h3 id="2-css代码"><a class="header-anchor" href="#2-css代码" aria-hidden="true">#</a> 2. CSS代码</h3><p>假设左侧的固定宽度为200px，右侧的固定宽度为150px，则首先在<code>container</code>上设置：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#container</span> <span class="token punctuation">{</span>
+  <span class="token property">padding-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">padding-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-8442">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#container {
+  padding-left: 200px; 
+  padding-right: 150px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-8442" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>为左右两列预留出相应的空间，得到如下示意图：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100115.png" alt=""></p><p>创建布局框架</p><p>随后分别为三列设置宽度与浮动，同时对<code>footer</code>设置清除浮动：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#container .column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token selector">#footer</span> <span class="token punctuation">{</span>
+  <span class="token property">clear</span><span class="token punctuation">:</span> both<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-51991">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#container .column {
+  float: left;
+}
+
+#center {
+  width: 100%;
+}
+
+#left {
+  width: 200px; 
+}
+
+#right {
+  width: 150px; 
+}
+
+#footer {
+  clear: both;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-51991" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br></div></div><p>得到如下效果：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100137.png" alt=""></p><p>设置宽度和清除浮动</p><p>根据浮动的特性，由于<code>center</code>的宽度为100%，即占据了第一行的所有空间，所以<code>left</code>和<code>right</code>被“挤”到了第二行。</p><p>接下来的工作是将<code>left</code>放置到之前预留出的位置上，这里使用**<a href="https://www.cnblogs.com/2050/archive/2012/08/13/2636467.html" target="_blank" rel="noopener noreferrer">负外边距</a>（nagetive margin）**：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-40324">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#left {
+  width: 200px; 
+  margin-left: -100%;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-40324" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>得到：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100202.png" alt=""></p><p>将left移动到预留位置-1</p><p>随后还需要使用**定位(position)**方法：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -100%<span class="token punctuation">;</span>
+  <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+  <span class="token property">right</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-81987">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#left {
+  width: 200px; 
+  margin-left: -100%;
+  position: relative;
+  right: 200px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-81987" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>这里使用<code>position: relative</code>和<code>right: 200px</code>将<code>left</code>的位置在原有位置基础上左移200px，以完成<code>left</code>的放置：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100217.png" alt=""></p><p>将left移动到预留位置-2</p><p>接下来放置<code>right</code>，只需添加一条声明即可：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+  <span class="token property">margin-right</span><span class="token punctuation">:</span> -150px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-65549">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#right {
+  width: 150px; 
+  margin-right: -150px; 
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-65549" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>得到最终的效果图：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100229.png" alt=""></p><p>将right移动到预留位置</p><p>至此，布局效果完成。不过还需要考虑最后一步，那就是<strong>页面的最小宽度</strong>：要想保证该布局效果正常显示，由于两侧都具有固定的宽度，所以需要给定页面一个最小的宽度，但这并不只是简单的200+150=350px。回想之前<code>left</code>使用了<code>position: relative</code>，所以就意味着在<code>center</code>开始的区域，还存在着一个<code>left</code>的宽度。所以页面的最小宽度应该设置为200+150+200=550px：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">body</span> <span class="token punctuation">{</span>
+  <span class="token property">min-width</span><span class="token punctuation">:</span> 550px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-34255">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="body {
+  min-width: 550px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-34255" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>综上所述，圣杯布局的CSS代码为：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">body</span> <span class="token punctuation">{</span>
+  <span class="token property">min-width</span><span class="token punctuation">:</span> 550px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#container</span> <span class="token punctuation">{</span>
+  <span class="token property">padding-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">padding-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#container .column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -100%<span class="token punctuation">;</span>
+  <span class="token property">position</span><span class="token punctuation">:</span> relative<span class="token punctuation">;</span>
+  <span class="token property">right</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+  <span class="token property">margin-right</span><span class="token punctuation">:</span> -150px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token selector">#footer</span> <span class="token punctuation">{</span>
+  <span class="token property">clear</span><span class="token punctuation">:</span> both<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-68907">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="body {
+  min-width: 550px;
+}
+
+#container {
+  padding-left: 200px; 
+  padding-right: 150px;
+}
+
+#container .column {
+  float: left;
+}
+
+#center {
+  width: 100%;
+}
+
+#left {
+  width: 200px; 
+  margin-left: -100%;
+  position: relative;
+  right: 200px;
+}
+
+#right {
+  width: 150px; 
+  margin-right: -150px; 
+}
+
+#footer {
+  clear: both;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-68907" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br></div></div><p>关于圣杯布局的示例，可参考：<a href="https://litaooooo.github.io/page-examples/holy-grail.html" target="_blank" rel="noopener noreferrer">圣杯布局</a></p><p>最后提醒一下很多朋友可能会忽略的小细节：在<code>#center</code>中，包含了一条声明<code>width: 100%</code>，这是中间栏能够做到自适应的关键。可能会有朋友认为不需要设置这条声明，因为觉得<code>center</code>在不设置宽度的情况下会默认将宽度设置为父元素(<code>container</code>)的100%宽度。但需要注意到，<code>center</code>是浮动元素，由于浮动具有<strong>包裹性</strong>，在不显式设置宽度的情况下会自动“收缩”到内容的尺寸大小。如果去掉<code>width: 100%</code>，则当中间栏不包含或者包含较少内容时，整个布局会“崩掉”，而达不到这样的效果：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100244.png" alt=""></p><p>中间栏仅包含较少内容</p><h2 id="双飞翼布局"><a class="header-anchor" href="#双飞翼布局" aria-hidden="true">#</a> 双飞翼布局</h2><h3 id="1-dom结构-1"><a class="header-anchor" href="#1-dom结构-1" aria-hidden="true">#</a> 1. DOM结构</h3><div class="language-xml line-numbers-mode"><pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>header<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>container<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+    <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>center<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>left<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>right<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>footer<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>body</span><span class="token punctuation">&gt;</span></span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-44576">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&lt;body&gt;
+  &lt;div id=&quot;header&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;container&quot; class=&quot;column&quot;&gt;
+    &lt;div id=&quot;center&quot;&gt;&lt;/div&gt;
+  &lt;/div&gt;
+  &lt;div id=&quot;left&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;right&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;footer&quot;&gt;&lt;/div&gt;
+&lt;body&gt;
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-44576" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>双飞翼布局的DOM结构与圣杯布局的区别是用<code>container</code>仅包裹住<code>center</code>，另外将<code>.column</code>类从<code>center</code>移至<code>container</code>上。</p><h3 id="2-css代码-1"><a class="header-anchor" href="#2-css代码-1" aria-hidden="true">#</a> 2. CSS代码</h3><p>按照与圣杯布局相同的思路，首先设置各列的宽度与浮动，并且为左右两列预留出空间，以及为<code>footer</code>设置浮动清除：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#container</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+  <span class="token property">margin-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+<span class="token punctuation">}</span>
+
+<span class="token selector">#footer</span> <span class="token punctuation">{</span>
+  <span class="token property">clear</span><span class="token punctuation">:</span> both<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-2464">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#container {
+  width: 100%;
+}
+
+.column {
+  float: left;
+}
+
+#center {
+  margin-left: 200px;
+  margin-right: 150px;
+}
+
+#left {
+  width: 200px; 
+}
+
+#right {
+  width: 150px; 
+}
+
+#footer {
+  clear: both;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-2464" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br></div></div><p>得到如下效果示意图：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100304.png" alt=""></p><p>双飞翼布局初始设置</p><p>以上代码将<code>container</code>,<code>left</code>,<code>right</code>设置为<code>float: left</code>，而在<code>container</code>内部，<code>center</code>由于没有设置浮动，所以其宽度默认为<code>container</code>的100%宽度，通过对其设置<code>margin-left</code>和<code>margin-right</code>为左右两列预留出了空间。</p><p>将<code>left</code>放置到预留位置：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-54377">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#left {
+  width: 200px; 
+  margin-left: -100%;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-54377" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>得到：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100320.png" alt=""></p><p>放置left到预留位置</p><p>将<code>right</code>放置到预留位置：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-68966">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#right {
+  width: 150px; 
+  margin-left: -150px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-68966" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>得到最终效果：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100335.png" alt=""></p><p>双飞翼布局最终效果</p><p>最后计算最小页面宽度：由于双飞翼布局没有用到<code>position:relative</code>进行定位，所以最小页面宽度应该为200+150=350px。但是当页面宽度缩小到350px附近时，会挤占中间栏的宽度，使得其内容被右侧栏覆盖，如下所示：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100351.png" alt=""></p><p>中间栏内容被覆盖</p><p>因此在设置最小页面宽度时，应该适当增加一些宽度以供中间栏使用（假设为150px），则有：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">body</span> <span class="token punctuation">{</span>
+  <span class="token property">min-width</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-13907">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="body {
+  min-width: 500px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-13907" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br></div></div><p>至此双飞翼布局大功告成！其布局整体代码为：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">body</span> <span class="token punctuation">{</span>
+  <span class="token property">min-width</span><span class="token punctuation">:</span> 500px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#container</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">.column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+        
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+  <span class="token property">margin-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+        
+<span class="token selector">#left</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+        
+<span class="token selector">#right</span> <span class="token punctuation">{</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span> 
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> -150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+        
+<span class="token selector">#footer</span> <span class="token punctuation">{</span>
+  <span class="token property">clear</span><span class="token punctuation">:</span> both<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011499-91420">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="body {
+  min-width: 500px;
+}
+
+#container {
+  width: 100%;
+}
+
+.column {
+  float: left;
+}
+        
+#center {
+  margin-left: 200px;
+  margin-right: 150px;
+}
+        
+#left {
+  width: 200px; 
+  margin-left: -100%;
+}
+        
+#right {
+  width: 150px; 
+  margin-left: -150px;
+}
+        
+#footer {
+  clear: both;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011499-91420" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br></div></div><p>关于双飞翼布局的示例，可参考：<a href="https://litaooooo.github.io/page-examples/double-wings.html" target="_blank" rel="noopener noreferrer">双飞翼布局</a></p><h2 id="总结与思考"><a class="header-anchor" href="#总结与思考" aria-hidden="true">#</a> 总结与思考</h2><p>通过对圣杯布局和双飞翼布局的介绍可以看出，圣杯布局在DOM结构上显得更加直观和自然，且在日常开发过程中，更容易形成这样的DOM结构（通常<code>和</code>/<code>一起被嵌套在</code>中）；而双飞翼布局在实现上由于不需要使用定位，所以更加简洁，且允许的页面最小宽度通常比圣杯布局更小。</p><p>其实通过思考不难发现，两者在代码实现上都额外引入了一个``标签，其目的都是为了既能保证中间栏产生浮动（浮动后还<strong>必须</strong>显式设置宽度），又能限制自身宽度为两侧栏留出空间。</p><p>从这个角度出发，如果去掉额外添加的``标签，能否完成相同的布局呢？答案是肯定的，不过这需要在<strong>兼容性上做出牺牲</strong>：</p><h3 id="dom结构"><a class="header-anchor" href="#dom结构" aria-hidden="true">#</a> DOM结构</h3><div class="language-xml line-numbers-mode"><pre><code><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>header<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>center<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>left<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>right<span class="token punctuation">&quot;</span></span> <span class="token attr-name">class</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>column<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>footer<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011500-68661">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&lt;div id=&quot;header&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;center&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;left&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;right&quot; class=&quot;column&quot;&gt;&lt;/div&gt;
+&lt;div id=&quot;footer&quot;&gt;&lt;/div&gt;
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011500-68661" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br></div></div><p>去掉额外的``标签后，得到的DOM结构如上所示，基于双飞翼布局的实现思路，只需要在<code>center</code>上做出修改：</p><h3 id="1-使用calc"><a class="header-anchor" href="#1-使用calc" aria-hidden="true">#</a> 1. 使用calc()</h3><div class="language-css line-numbers-mode"><pre><code><span class="token selector">.column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+    
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">margin-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+  <span class="token property">margin-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> <span class="token function">calc</span><span class="token punctuation">(</span>100% - 350px<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011500-94747">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".column {
+  float: left;
+}
+    
+#center {
+  margin-left: 200px;
+  margin-right: 150px;
+  width: calc(100% - 350px);
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011500-94747" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>通过<code>calc()</code>可以十分方便地计算出<code>center</code>应该占据的自适应宽度，目前<code>calc()</code>支持到<strong>IE9</strong>。</p><h3 id="2-使用border-box"><a class="header-anchor" href="#2-使用border-box" aria-hidden="true">#</a> 2. 使用border-box</h3><div class="language-css line-numbers-mode"><pre><code><span class="token selector">.column</span> <span class="token punctuation">{</span>
+  <span class="token property">float</span><span class="token punctuation">:</span> left<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+    
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+  <span class="token property">padding-left</span><span class="token punctuation">:</span> 200px<span class="token punctuation">;</span>
+  <span class="token property">padding-right</span><span class="token punctuation">:</span> 150px<span class="token punctuation">;</span>
+  <span class="token property">box-sizing</span><span class="token punctuation">:</span> border-box<span class="token punctuation">;</span>
+  <span class="token property">width</span><span class="token punctuation">:</span> 100%<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011500-36155">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=".column {
+  float: left;
+}
+    
+#center {
+  padding-left: 200px;
+  padding-right: 150px;
+  box-sizing: border-box;
+  width: 100%;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011500-36155" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>使用<code>border-box</code>可以将<code>center</code>的整个盒模型宽度设置为父元素的100%宽度，此时再利用<code>padding-left</code>和<code>padding-right</code>可以自动得到中间栏的自适应宽度。不过需要注意的是，由于padding是盒子的一部分，所以padding部分会具有中间栏的背景色，当中间栏高于侧栏时，会出现这样的情况：</p><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/image/20200829100407.png" alt=""></p><p>padding背景色影响左侧空间</p><p>目前<code>box-sizing</code>支持到<strong>IE8</strong>。</p><h3 id="3-使用flex"><a class="header-anchor" href="#3-使用flex" aria-hidden="true">#</a> 3. 使用flex</h3><p>这里使用flex还是需要与圣杯布局相同的DOM结构，不过在实现上将更加简单：</p><div class="language-xml line-numbers-mode"><pre><code><span class="token comment">&lt;!-- DOM结构 --&gt;</span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>container<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>center<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>left<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+  <span class="token tag"><span class="token tag"><span class="token punctuation">&lt;</span>div</span> <span class="token attr-name">id</span><span class="token attr-value"><span class="token punctuation attr-equals">=</span><span class="token punctuation">&quot;</span>right<span class="token punctuation">&quot;</span></span><span class="token punctuation">&gt;</span></span><span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+<span class="token tag"><span class="token tag"><span class="token punctuation">&lt;/</span>div</span><span class="token punctuation">&gt;</span></span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011500-60194">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&lt;!-- DOM结构 --&gt;
+&lt;div id=&quot;container&quot;&gt;
+  &lt;div id=&quot;center&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;left&quot;&gt;&lt;/div&gt;
+  &lt;div id=&quot;right&quot;&gt;&lt;/div&gt;
+&lt;/div&gt;
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011500-60194" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br></div></div><p>CSS代码如下：</p><div class="language-css line-numbers-mode"><pre><code><span class="token selector">#container</span> <span class="token punctuation">{</span>
+    <span class="token property">display</span><span class="token punctuation">:</span> flex<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#center</span> <span class="token punctuation">{</span>
+    <span class="token property">flex</span><span class="token punctuation">:</span> 1<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#left</span> <span class="token punctuation">{</span>
+    <span class="token property">flex</span><span class="token punctuation">:</span> 0 0 200px<span class="token punctuation">;</span>
+    <span class="token property">order</span><span class="token punctuation">:</span> -1<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token selector">#right</span> <span class="token punctuation">{</span>
+    <span class="token property">flex</span><span class="token punctuation">:</span> 0 0 150px<span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629557011500-33022">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="#container {
+    display: flex;
+}
+
+#center {
+    flex: 1;
+}
+
+#left {
+    flex: 0 0 200px;
+    order: -1;
+}
+
+#right {
+    flex: 0 0 150px;
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629557011500-33022" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br></div></div></div></div></div><div class="footer"><div class="follow"><a href="https://github.com/artiely" target="_target" title="github"><i class="icon iconfont"></i></a><a href="https://gitee.com/artiely" target="_target" title="gitee"><i class="icon iconfont"></i></a><a href="https://www.npmjs.com/~artiely" target="_target" title="npm"><i class="icon iconfont"></i></a><a href="mailto:artiely1024@gmail.com" title="gmail"><i class="icon iconfont"></i></a><a href="https://www.youtube.com/channel/UC3U9zfLMepBqyQjlvEVhQDQ?view_as=subscriber" target="_target" title="youtube"><i class="icon iconfont"></i></a><a href="https://www.zhihu.com/people/artiely-19" target="_target" title="zhihu"><i class="icon iconfont"></i></a><a href="https://space.bilibili.com/31432769?spm_id_from=333.33.b_73656375726974794f75744c696e6b.1" target="_target" title="bilibili"><i class="icon iconfont"></i></a></div><p class="footer-copyright"> ©Artiely <span class="time">-2019-2021</span></p></div><!--]--></div>
+    <script>__VP_HASH_MAP__ = JSON.parse("{\"index.md\":\"1dd82a23\",\"about_index.md\":\"8cacf850\",\"code_index.md\":\"bc9afb37\",\"comment_index.md\":\"305643b2\",\"tags_index.md\":\"b394f281\",\"timeline_index.md\":\"64c3604b\",\"post_2017_2017-6-10-tcp.md\":\"4bff6220\",\"post_2017_2017-6-6-css-1px.md\":\"8b792530\",\"post_2017_2017-6-6-css-ios-android.md\":\"34b21ff6\",\"post_2017_2017-6-6-css-sticky-footer.md\":\"bdbb7d21\",\"post_2017_2017-6-6-git.md\":\"ce988f32\",\"post_2017_2017-6-7-css-mobile-scroll-through.md\":\"24eda4a4\",\"post_2017_2017-6-8-yahoo-rules14.md\":\"d04ad885\",\"post_2017_2017-6-9-form-default-submit.md\":\"c81e706c\",\"post_2017_2017-7-4-moment.md\":\"7ac67b06\",\"post_2017_2017-7-7-css-rules.md\":\"3eaaa51d\",\"post_2017_2017-7-7-js-rules.md\":\"295f14fe\",\"post_2017_2017-7-7-rules-file.md\":\"3059937d\",\"post_2017_2017-7-7-rules-html.md\":\"81d1f61b\",\"post_2018_2018-1-30-centos-setup-nodejs.md\":\"21e1e8d2\",\"post_2018_2018-10-10-axios.md\":\"f0be1150\",\"post_2018_2018-10-10-chrome-dev-tips.md\":\"6fa08b9c\",\"post_2018_2018-10-10-get-post.md\":\"29221919\",\"post_2018_2018-10-10-git-green-pointer.md\":\"3ccf6966\",\"post_2018_2018-10-10-js-bit-operation.md\":\"1c33ecb0\",\"post_2018_2018-10-10-npm-nrm.md\":\"e96c01f5\",\"post_2018_2018-10-10-pm2.md\":\"4acd4997\",\"post_2018_2018-10-10-vue-pracel.md\":\"88950f83\",\"post_2018_2018-10-7-node-spider.md\":\"bef70d64\",\"post_2018_2018-3-12-nodejs-npm.md\":\"fde5fdb4\",\"post_2018_2018-6-26-web-koa-egg.md\":\"cb1f0540\",\"post_2018_2018-6-9-nuxt.md\":\"1d060bc9\",\"post_2018_2018-7-10-electron-message.md\":\"7eed85c9\",\"post_2018_2018-7-10-websocket.md\":\"59c778c1\",\"post_2018_2018-7-11-electron-nedb.md\":\"3b6797a4\",\"post_2018_2018-7-11-electron-shortcut-cliboard-nativeimage.md\":\"5ee44930\",\"post_2018_2018-7-3-electron-init.md\":\"8b66007e\",\"post_2018_2018-7-4-electron-base.md\":\"3c793fd1\",\"post_2018_2018-7-5-electron-model.md\":\"6e6cf702\",\"post_2018_2018-7-6-electron-menu-shortcut.md\":\"a62700a1\",\"post_2018_2018-7-7-electron-main-render.md\":\"d352cedc\",\"post_2018_2018-7-8-electron-dialog.md\":\"fc50cba3\",\"post_2018_2018-7-8-electron-shell-url-webview.md\":\"a87fc727\",\"post_2018_2018-7-9-electron-ico.md\":\"c39bd6aa\",\"post_2018_2018-8-7-egg-start.md\":\"e7e79807\",\"post_2018_2018-8-8-question.md\":\"797ebe6c\",\"post_2018_2018-8-8-vue-rules.md\":\"a5746d17\",\"post_2018_2018-9-7-js.md\":\"9a4e4d4e\",\"post_2019_2019-10-27-node-pm2.md\":\"8f2313d5\",\"post_2019_2019-10-3-alinode.md\":\"9554b8d8\",\"post_2019_2019-11-16-nodejs-api.md\":\"b944daff\",\"post_2019_2019-4-15-nodejs-tcp-udp-h2.md\":\"13c8f913\",\"post_2019_2019-4-16-vue-cli3+to-plugin.md\":\"cebf025d\",\"post_2019_2019-4-3-sentry-sourcemap.md\":\"acc86577\",\"post_2019_2019-4-3-vuepress-theme.md\":\"e82d2094\",\"post_2019_2019-5-5-restful-graphql.md\":\"2549d917\",\"post_2019_2019-6-1-linux.md\":\"0441d4f2\",\"post_2019_2019-6-12-deploy.md\":\"ef098d91\",\"post_2019_2019-6-19-fontend-performance-optimization.md\":\"e9fccd4a\",\"post_2019_2019-6-27-eslint-test.md\":\"bd81c131\",\"post_2019_2019-6-4-docker.md\":\"a2cdc2e6\",\"post_2019_2019-6-4-nodejs-events.md\":\"2de88a80\",\"post_2019_2019-6-6-css-fixedleft-autoright.md\":\"6962b704\",\"post_2019_2019-6-6-vue-observable.md\":\"f8055807\",\"post_2019_2019-7-13-automated-testing.md\":\"dc7fff88\",\"post_2019_2019-7-6-android-studio-flutter-shortcut.md\":\"17f60f4f\",\"post_2019_2019-7-6-dart-flutter-conf.md\":\"3230a015\",\"post_2019_2019-8-14-nosql.md\":\"1cf5fd04\",\"post_2021_2021-1-3-puppeteer.md\":\"4c94f00f\",\"post_2021_2021-2-23-proxy.md\":\"7c36be8c\",\"post_2021_2021-3-18-appleid.md\":\"8ddc761d\",\"post_2021_2021-6-15-mini.md\":\"05666a55\",\"post_2021_2021-7-23-pixijs.md\":\"b95d0749\",\"post_2021_2021-8-15-resize-observer.md\":\"4ba0de13\",\"post_2021_2021-8-16-min-share.md\":\"013ca983\",\"post_2020_2020-12-31-css.md\":\"722b6fa6\",\"post_2020_2020-3-16-chrome-plugin.md\":\"6501a2b9\",\"post_2020_2020-3-16-vscode-plugin.md\":\"961b1b51\",\"post_2020_2020-3-16-windows-plugin.md\":\"1f353ace\",\"post_2020_2020-3-18-electron-mirror-down.md\":\"ab5d3d5c\",\"post_2020_2020-3-18-electron-updater.md\":\"c7688116\",\"post_2020_2020-3-19-timer.js.md\":\"14c8b7c6\",\"post_2020_2020-3-20-antd-vue-pro.md\":\"9a2580c6\",\"post_2020_2020-3-20-js-how-to-work.md\":\"e38478bf\",\"post_2020_2020-3-29-vuepress-plugin.md\":\"91c1a89b\",\"post_2020_2020-3-31-shituzhengmei.md\":\"11b00859\",\"post_2020_2020-4-1-plupload.md\":\"587d84f1\",\"post_2020_2020-4-2-cmder.md\":\"2e104658\",\"post_2020_2020-4-29-vue-hook-lifecycle.md\":\"a0a9aafe\",\"post_2020_2020-4-4-yiqin.md\":\"1dcf7488\",\"post_2020_2020-4-6-plop.md\":\"d5e34049\",\"post_2020_2020-5-22-ali-oss.md\":\"51cb76e6\",\"post_2020_2020-5-29-axios.md\":\"ea12ce2a\",\"post_2020_2020-6-12-icon.md\":\"05971bed\",\"post_2020_2020-6-20-limit-chars.md\":\"5e0c91e8\",\"post_2020_2020-6-23-charslimit.md\":\"8ba59092\",\"post_2020_2020-6-25-custom-event.md\":\"4f21e6c9\",\"post_2020_2020-6-25-photo.md\":\"860d4695\",\"post_2020_2020-6-29-component.md\":\"6a33d1fd\",\"post_2020_2020-6-5-01-vue-cli.md\":\"6de83173\",\"post_2020_2020-6-5-02-vue-dir.md\":\"60fc7303\",\"post_2020_2020-6-5-03-vue-config.md\":\"a4de14f5\",\"post_2020_2020-6-5-04-vue.webpack.md\":\"73a7bdeb\",\"post_2020_2020-6-5-05-env-mode.md\":\"0ad8955b\",\"post_2020_2020-6-5-06-local-preview.md\":\"1fdf61de\",\"post_2020_2020-6-9-01-plugin.md\":\"d86d3952\",\"post_2020_2020-7-1-vue-api.md\":\"d61e9535\",\"post_2020_2020-7-1-vuex-api.md\":\"e27fd0d6\",\"post_2020_2020-7-13-madel.md\":\"aa2808a9\",\"post_2020_2020-7-14-share.md\":\"9b4315d6\",\"post_2020_2020-7-21-taro.md\":\"48553bac\",\"post_2020_2020-7-23-temp.md\":\"02e1964d\",\"post_2020_2020-7-9-thks-js.md\":\"72987a61\",\"post_2020_2020-8-17.md\":\"b5f0f831\",\"post_2020_2020-8-27-frontend-css1.md\":\"e9fa7268\",\"post_2020_2020-8-28-frontend-css2.md\":\"891ecf04\",\"post_2020_2020-8-29-frontend-js1.md\":\"23f7ba39\",\"post_2020_2020-8-29-frontend-js2.md\":\"25adeb71\",\"post_2020_2020-8-29-frontend-js3.md\":\"a44e3c94\",\"post_2020_2020-8-30-frontend-brower1.md\":\"dc1f1b98\",\"post_2020_2020-8-30-frontend-brower2.md\":\"0705e6f3\",\"post_2020_2020-8-31-frontend-brower3.md\":\"a019d3cc\",\"post_2020_2020-8-31-frontend-brower4.md\":\"88ef8b8e\",\"post_2020_2020-9-1-fw.md\":\"78bcad63\",\"post_2020_2020-9-1-fw2.md\":\"aff579a3\",\"post_2020_2020-9-15-js-arr.md\":\"9f45a83c\",\"post_2020_2020-9-2-proxy.md\":\"76b3628d\",\"post_2020_2020-9-24-interview.md\":\"8129eb80\",\"post_2020_2020-9-3-brower.md\":\"5f258a3a\",\"post_2020_2020-9-5-what-happens.md\":\"f5479f80\",\"post_2020_2020-9-7-recursive.md\":\"94dd0c9a\"}")</script>
+    <script type="module" async src="/assets/app.5f3fb606.js"></script>
+  </body>
+</html>

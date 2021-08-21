@@ -1,0 +1,1042 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Nodejs通用业务模块 | Artiely' blog</title>
+    <meta name="description" content="随便玩玩">
+    <link rel="stylesheet" href="/assets/style.514056dd.css">
+    <link rel="modulepreload" href="/assets/Home.e48ff0e9.js">
+    <link rel="modulepreload" href="/assets/lottie.42100ed3.js">
+    <link rel="modulepreload" href="/assets/lightgallery.es5.f43f3494.js">
+    <link rel="modulepreload" href="/assets/TextPlugin.8595634c.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="modulepreload" href="/assets/post_2019_2019-10-27-node-pm2.md.8f2313d5.lean.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2707633_ayah6j2r7wi.css">
+    <script type="text/javascript" src="/js/twikoo.js"></script>
+    <meta name="twitter:title" content="Nodejs通用业务模块 | Artiely&#39; blog">
+    <meta property="og:title" content="Nodejs通用业务模块 | Artiely&#39; blog">
+  </head>
+  <body>
+    <div id="app"><!--[--><!----><!----><div class="content dark" style="height:100%;"><div style="position:relative;"><div><h1 id="nodejs进程守护"><a class="header-anchor" href="#nodejs进程守护" aria-hidden="true">#</a> Nodejs进程守护</h1><h2 id="目标"><a class="header-anchor" href="#目标" aria-hidden="true">#</a> 目标</h2><ol><li>理解什么是进程守护</li><li>理解为什么nodejs服务需要进程守护</li><li>从源码理解Egg对进程守护的处理</li></ol><h2 id="进程守护"><a class="header-anchor" href="#进程守护" aria-hidden="true">#</a> 进程守护</h2><p>守护进程，也即通常所说的 Daemon 进程，是 Linux 下一种<strong>特殊的后台服务进程</strong>，它独立于控制终端并且周期性的执行某种任务或者等待处理某些发生的事件。守护进程通常在系统引导时启动，在系统关闭时终止。Linux 系统下大多数服务都是通过守护进程实现的。守护进程的名称通常以 d 结尾，如 httpd、crond、mysqld等。</p><h3 id="控制终端-是什么"><a class="header-anchor" href="#控制终端-是什么" aria-hidden="true">#</a> 控制终端 是什么？</h3><p>终端是用户与操作系统进行交流的界面。在 Linux 系统中，用户由终端登录系统登入系统后会得到一个 shell 进程，这个终端便成为这个 shell 进程的控制终端（Controlling Terminal）。<strong>shell 进程启动的其他进程，由于复制了父进程的信息，因此也都同依附于这个控制终端。</strong></p><p>从终端启动的进程都依附于该终端，**并受终端控制和影响。**终端关闭，相应的进程都会自动关闭。守护进程脱离终端的目的，也即是不受终端变化的影响不被终端打断，当然也不想在终端显示执行过程中的信息。</p><p>如果不想进程受到用户、终端或其他变化的影响，<strong>就必须把它变成守护进程</strong>。守护进程可以在 Linux 启动时从脚本 /etc/rc.d 启动，也可以由作业规划进程 crond 启动，还可以通过用户终端（一般是 Shell）启动。</p><h3 id="如何实现守护进程"><a class="header-anchor" href="#如何实现守护进程" aria-hidden="true">#</a> 如何实现守护进程</h3><p>**守护进程属于 Linux 进程管理的范畴。**其首要的特性是后台运行，其次，要与从启动它的父进程的运行环境隔离开来，需要处理的内容大致包括会话、控制终端、进程组、文件描述符、文件权限掩码以及工作目录等。</p><p>实现一个守护进程，其实就是将普通进程按照上述特性改造为守护进程的过程。需要注意的一点是，不同版本的 Unix 系统其实现机制不同，BSD 和 Linux 下的实现细节就不同。根据上述的特性，我们便可以创建一个简单的守护进程，这里以 Linux 系统下从终端 Shell 来启动为例。</p><p>核心步骤：</p><blockquote><ol><li>创建子进程，父进程退出</li><li>子进程创建新会话</li></ol></blockquote><h4 id="shell"><a class="header-anchor" href="#shell" aria-hidden="true">#</a> shell</h4><div class="language-"><pre><code>nohup node http.js &amp;
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989441-58738">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="nohup node http.js &amp;
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989441-58738" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h4 id="nodejs"><a class="header-anchor" href="#nodejs" aria-hidden="true">#</a> nodejs</h4><p>核心： detached， 帮助父子进程脱离关系</p><div class="language-js line-numbers-mode"><pre><code><span class="token keyword">var</span> spawn <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;child_process&#39;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>spawn<span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> ls <span class="token operator">=</span> <span class="token function">spawn</span><span class="token punctuation">(</span><span class="token string">&#39;node&#39;</span><span class="token punctuation">,</span> <span class="token punctuation">[</span><span class="token string">&#39;http.js&#39;</span><span class="token punctuation">]</span><span class="token punctuation">,</span> <span class="token punctuation">{</span>
+    detached<span class="token operator">:</span> <span class="token boolean">true</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ls<span class="token punctuation">.</span>stdout<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">&#39;data&#39;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">stdout: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>data<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ls<span class="token punctuation">.</span>stderr<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">&#39;data&#39;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">data</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">stderr: </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>data<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+ls<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">&#39;close&#39;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token parameter">code</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+  console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">子进程退出，退出码 </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>code<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989441-47034">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="var spawn = require(&#39;child_process&#39;).spawn;
+
+const ls = spawn(&#39;node&#39;, [&#39;http.js&#39;], {
+    detached: true
+});
+
+ls.stdout.on(&#39;data&#39;, (data) =&gt; {
+  console.log(`stdout: ${data}`);
+});
+
+ls.stderr.on(&#39;data&#39;, (data) =&gt; {
+  console.error(`stderr: ${data}`);
+});
+
+ls.on(&#39;close&#39;, (code) =&gt; {
+  console.log(`子进程退出，退出码 ${code}`);
+});
+
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989441-47034" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br></div></div><h2 id="需要进程守护的原因"><a class="header-anchor" href="#需要进程守护的原因" aria-hidden="true">#</a> 需要进程守护的原因</h2><p>服务稳定的因素</p><ol><li>后台运行</li><li>对后台运行进程的&quot;守护&quot;</li></ol><p>由于nodejs的单线程的脆弱性，一旦遇到运行错误便会严重到退出node进程导致系统或应用瘫痪。</p><p><strong>结论： 进程守护，守护的过程其实可以理解为，服务的重启。</strong></p><p>实例：</p><p>遇到错误，进程退出。</p><div class="language-js line-numbers-mode"><pre><code><span class="token keyword">var</span> http <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;http&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">var</span> server <span class="token operator">=</span> http<span class="token punctuation">.</span><span class="token function">createServer</span><span class="token punctuation">(</span><span class="token punctuation">(</span><span class="token parameter">req<span class="token punctuation">,</span> res</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span><span class="token punctuation">(</span>req<span class="token punctuation">.</span>url <span class="token operator">===</span> <span class="token string">&#39;/zqz&#39;</span><span class="token punctuation">)</span><span class="token punctuation">{</span>
+        <span class="token keyword">throw</span> <span class="token string">&#39;req Error&#39;</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+    res<span class="token punctuation">.</span><span class="token function">end</span><span class="token punctuation">(</span><span class="token string">&#39;Hello world!&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">listen</span><span class="token punctuation">(</span><span class="token string">&#39;3000&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;localhost&#39;</span><span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    console<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&#39;Server running...&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-85067">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="var http = require(&#39;http&#39;);
+
+var server = http.createServer((req, res) =&gt; {
+    if(req.url === &#39;/zqz&#39;){
+        throw &#39;req Error&#39;;
+    }
+    res.end(&#39;Hello world!&#39;);
+}).listen(&#39;3000&#39;, &#39;localhost&#39;, () =&gt; {
+    console.log(&#39;Server running...&#39;);
+});
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-85067" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br></div></div><p>我们请求localhost:3000</p><div class="language-"><pre><code> $  node index.js
+Server running...
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-80951">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content=" $  node index.js
+Server running...
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-80951" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><h2 id="常用进程守护方案"><a class="header-anchor" href="#常用进程守护方案" aria-hidden="true">#</a> 常用进程守护方案</h2><ul><li>pm2</li><li>forever</li></ul><h3 id="pm2"><a class="header-anchor" href="#pm2" aria-hidden="true">#</a> PM2</h3><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/images/20200314161858.png" alt="image-20191027012904510"></p><p>PM2是带有内置负载平衡器的Node.js应用程序的生产过程管理器。它使您可以使应用程序永远保持活动状态，无需停机即可重新加载它们，并简化常见的系统管理任务。</p><div class="language-"><pre><code>npm install pm2 -g
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-89934">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="npm install pm2 -g
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-89934" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>启动服务：</p><div class="language-"><pre><code>pm2 start app.js
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-82616">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="pm2 start app.js
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-82616" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/images/20200314161902.png" alt="image-20191027012935914"></p><h3 id="forever"><a class="header-anchor" href="#forever" aria-hidden="true">#</a> Forever</h3><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/images/20200314161909.png" alt="image-20191027012925383"></p><div class="language-"><pre><code>npm install forever -g
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-88390">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="npm install forever -g
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-88390" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>启动服务:</p><div class="language-"><pre><code>forever start app.js
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-46832">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="forever start app.js
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-46832" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="egg"><a class="header-anchor" href="#egg" aria-hidden="true">#</a> Egg</h3><p>启动命令</p><div class="language-"><pre><code>npm run start
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-69993">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="npm run start
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-69993" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><p>引用：package.json</p><div class="language-js line-numbers-mode"><pre><code>  <span class="token string">&quot;scripts&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;start&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-scripts start --daemon --title=egg-server-demo&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;stop&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-scripts stop --title=egg-server-demo&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;dev&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin dev&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;debug&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin debug&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;test&quot;</span><span class="token operator">:</span> <span class="token string">&quot;npm run lint -- --fix &amp;&amp; npm run test-local&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;test-local&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin test&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;cov&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin cov&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;lint&quot;</span><span class="token operator">:</span> <span class="token string">&quot;eslint .&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;ci&quot;</span><span class="token operator">:</span> <span class="token string">&quot;npm run lint &amp;&amp; npm run cov&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;autod&quot;</span><span class="token operator">:</span> <span class="token string">&quot;autod&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-83263">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;egg-scripts start --daemon --title=egg-server-demo&quot;,
+    &quot;stop&quot;: &quot;egg-scripts stop --title=egg-server-demo&quot;,
+    &quot;dev&quot;: &quot;egg-bin dev&quot;,
+    &quot;debug&quot;: &quot;egg-bin debug&quot;,
+    &quot;test&quot;: &quot;npm run lint -- --fix &amp;&amp; npm run test-local&quot;,
+    &quot;test-local&quot;: &quot;egg-bin test&quot;,
+    &quot;cov&quot;: &quot;egg-bin cov&quot;,
+    &quot;lint&quot;: &quot;eslint .&quot;,
+    &quot;ci&quot;: &quot;npm run lint &amp;&amp; npm run cov&quot;,
+    &quot;autod&quot;: &quot;autod&quot;
+  },
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-83263" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br></div></div><h4 id="eggjs-进程管理为什么没有选型-pm2"><a class="header-anchor" href="#eggjs-进程管理为什么没有选型-pm2" aria-hidden="true">#</a> Egg.js 进程管理为什么没有选型 PM2 ？</h4><blockquote><ol><li>PM2 模块本身复杂度很高，出了问题很难排查。我们认为框架使用的工具复杂度不应该过高，而 PM2 自身的复杂度超越了大部分应用本身。</li><li>没法做非常深的优化。</li><li>切实的需求问题，一个进程里跑 leader，其他进程代理到 leader 这种模式（<a href="https://link.zhihu.com/?target=https%3A//eggjs.org/zh-cn/core/cluster-and-ipc.html" target="_blank" rel="noopener noreferrer">多进程模型</a>），在企业级开发中对于减少远端连接，降低数据通信压力等都是切实的需求。特别当应用规模大到一定程度，这就会是刚需。egg 本身起源于蚂蚁金服和阿里，我们对标的起点就是大规模企业应用的构建，所以要非常全面。这些特性通过 PM2 很难做到。</li></ol></blockquote><h5 id="引入egg作者天猪的回答"><a class="header-anchor" href="#引入egg作者天猪的回答" aria-hidden="true">#</a> 引入EGG作者天猪的回答</h5><p><a href="https://www.zhihu.com/question/298718190/answer/511704261" target="_blank" rel="noopener noreferrer">https://www.zhihu.com/question/298718190/answer/511704261</a></p><h2 id="从源码分析egg进程管理"><a class="header-anchor" href="#从源码分析egg进程管理" aria-hidden="true">#</a> 从源码分析EGG进程管理</h2><p>script中的start为切入点，从egg-script开始分析</p><div class="language-js line-numbers-mode"><pre><code><span class="token punctuation">{</span>
+  <span class="token string">&quot;name&quot;</span><span class="token operator">:</span> <span class="token string">&quot;demo&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;1.0.0&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;description&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;private&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;egg&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;declarations&quot;</span><span class="token operator">:</span> <span class="token boolean">true</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;dependencies&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;egg&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^2.15.1&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;egg-scripts&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^2.11.0&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;devDependencies&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;autod&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^3.0.1&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;autod-egg&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^1.1.0&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;egg-bin&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^4.11.0&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;egg-ci&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^1.11.0&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;egg-mock&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^3.21.0&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;eslint&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^5.13.0&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;eslint-config-egg&quot;</span><span class="token operator">:</span> <span class="token string">&quot;^7.1.0&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;engines&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;node&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&gt;=10.0.0&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;scripts&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;start&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-scripts start --daemon --title=egg-server-demo&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;stop&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-scripts stop --title=egg-server-demo&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;dev&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin dev&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;debug&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin debug&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;test&quot;</span><span class="token operator">:</span> <span class="token string">&quot;npm run lint -- --fix &amp;&amp; npm run test-local&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;test-local&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin test&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;cov&quot;</span><span class="token operator">:</span> <span class="token string">&quot;egg-bin cov&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;lint&quot;</span><span class="token operator">:</span> <span class="token string">&quot;eslint .&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;ci&quot;</span><span class="token operator">:</span> <span class="token string">&quot;npm run lint &amp;&amp; npm run cov&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;autod&quot;</span><span class="token operator">:</span> <span class="token string">&quot;autod&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;ci&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;version&quot;</span><span class="token operator">:</span> <span class="token string">&quot;10&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;repository&quot;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+    <span class="token string">&quot;type&quot;</span><span class="token operator">:</span> <span class="token string">&quot;git&quot;</span><span class="token punctuation">,</span>
+    <span class="token string">&quot;url&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span>
+  <span class="token punctuation">}</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;author&quot;</span><span class="token operator">:</span> <span class="token string">&quot;&quot;</span><span class="token punctuation">,</span>
+  <span class="token string">&quot;license&quot;</span><span class="token operator">:</span> <span class="token string">&quot;MIT&quot;</span>
+<span class="token punctuation">}</span>
+
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-81787">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="{
+  &quot;name&quot;: &quot;demo&quot;,
+  &quot;version&quot;: &quot;1.0.0&quot;,
+  &quot;description&quot;: &quot;&quot;,
+  &quot;private&quot;: true,
+  &quot;egg&quot;: {
+    &quot;declarations&quot;: true
+  },
+  &quot;dependencies&quot;: {
+    &quot;egg&quot;: &quot;^2.15.1&quot;,
+    &quot;egg-scripts&quot;: &quot;^2.11.0&quot;
+  },
+  &quot;devDependencies&quot;: {
+    &quot;autod&quot;: &quot;^3.0.1&quot;,
+    &quot;autod-egg&quot;: &quot;^1.1.0&quot;,
+    &quot;egg-bin&quot;: &quot;^4.11.0&quot;,
+    &quot;egg-ci&quot;: &quot;^1.11.0&quot;,
+    &quot;egg-mock&quot;: &quot;^3.21.0&quot;,
+    &quot;eslint&quot;: &quot;^5.13.0&quot;,
+    &quot;eslint-config-egg&quot;: &quot;^7.1.0&quot;
+  },
+  &quot;engines&quot;: {
+    &quot;node&quot;: &quot;&gt;=10.0.0&quot;
+  },
+  &quot;scripts&quot;: {
+    &quot;start&quot;: &quot;egg-scripts start --daemon --title=egg-server-demo&quot;,
+    &quot;stop&quot;: &quot;egg-scripts stop --title=egg-server-demo&quot;,
+    &quot;dev&quot;: &quot;egg-bin dev&quot;,
+    &quot;debug&quot;: &quot;egg-bin debug&quot;,
+    &quot;test&quot;: &quot;npm run lint -- --fix &amp;&amp; npm run test-local&quot;,
+    &quot;test-local&quot;: &quot;egg-bin test&quot;,
+    &quot;cov&quot;: &quot;egg-bin cov&quot;,
+    &quot;lint&quot;: &quot;eslint .&quot;,
+    &quot;ci&quot;: &quot;npm run lint &amp;&amp; npm run cov&quot;,
+    &quot;autod&quot;: &quot;autod&quot;
+  },
+  &quot;ci&quot;: {
+    &quot;version&quot;: &quot;10&quot;
+  },
+  &quot;repository&quot;: {
+    &quot;type&quot;: &quot;git&quot;,
+    &quot;url&quot;: &quot;&quot;
+  },
+  &quot;author&quot;: &quot;&quot;,
+  &quot;license&quot;: &quot;MIT&quot;
+}
+
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-81787" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br></div></div><h3 id="从命令行开始"><a class="header-anchor" href="#从命令行开始" aria-hidden="true">#</a> 从命令行开始</h3><div class="language-js line-numbers-mode"><pre><code><span class="token keyword">class</span> <span class="token class-name">EggScripts</span> <span class="token keyword">extends</span> <span class="token class-name">Command</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">rawArgv</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>rawArgv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>usage <span class="token operator">=</span> <span class="token string">&#39;Usage: egg-scripts [command] [options]&#39;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// load directory</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">load</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&#39;lib/cmd&#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-15484">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="class EggScripts extends Command {
+  constructor(rawArgv) {
+    super(rawArgv);
+    this.usage = &#39;Usage: egg-scripts [command] [options]&#39;;
+
+    // load directory
+    this.load(path.join(__dirname, &#39;lib/cmd&#39;));
+  }
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-15484" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br></div></div><p>看看Command来自哪里？</p><div class="language-js line-numbers-mode"><pre><code><span class="token keyword">const</span> BaseCommand <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;common-bin&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">class</span> <span class="token class-name">Command</span> <span class="token keyword">extends</span> <span class="token class-name">BaseCommand</span> <span class="token punctuation">{</span>
+  
+<span class="token punctuation">}</span>
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-64356">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="const BaseCommand = require(&#39;common-bin&#39;);
+class Command extends BaseCommand {
+  
+}
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-64356" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><h4 id="common-bin"><a class="header-anchor" href="#common-bin" aria-hidden="true">#</a> common-bin</h4><p><a href="https://github.com/node-modules/common-bin" target="_blank" rel="noopener noreferrer">https://github.com/node-modules/common-bin</a></p><p>BaseCommand其实是对命令行的一种抽象，可以方便我们进行命令行工具的业务编写。</p><p>目录规范：与Egg-scripts一致</p><div class="language-"><pre><code>test/fixtures/my-git
+├── bin
+│   └── my-git.js
+├── command
+│   ├── remote
+│   │   ├── add.js
+│   │   └── remove.js
+│   ├── clone.js
+│   └── remote.js
+├── index.js
+└── package.json
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-29806">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="test/fixtures/my-git
+├── bin
+│   └── my-git.js
+├── command
+│   ├── remote
+│   │   ├── add.js
+│   │   └── remove.js
+│   ├── clone.js
+│   └── remote.js
+├── index.js
+└── package.json
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-29806" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br></div></div><h4 id="commandjs"><a class="header-anchor" href="#commandjs" aria-hidden="true">#</a> command.js</h4><p>主要集中在sourcemap参数的处理。</p><div class="language-js line-numbers-mode"><pre><code><span class="token string">&#39;use strict&#39;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;fs&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;path&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> BaseCommand <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;common-bin&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> Logger <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;zlogger&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> helper <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;./helper&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">Command</span> <span class="token keyword">extends</span> <span class="token class-name">BaseCommand</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">rawArgv</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>rawArgv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    Object<span class="token punctuation">.</span><span class="token function">assign</span><span class="token punctuation">(</span><span class="token keyword">this</span><span class="token punctuation">.</span>helper<span class="token punctuation">,</span> helper<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 参数的解析规则</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>parserOptions <span class="token operator">=</span> <span class="token punctuation">{</span>
+      removeAlias<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      removeCamelCase<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+      execArgv<span class="token operator">:</span> <span class="token boolean">true</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// common-bin setter, don&#39;t care about override at sub class</span>
+    <span class="token comment">// https://github.com/node-modules/common-bin/blob/master/lib/command.js#L158</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>options <span class="token operator">=</span> <span class="token punctuation">{</span>
+      sourcemap<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;whether enable sourcemap support, will load `source-map-support` etc&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;boolean&#39;</span><span class="token punctuation">,</span>
+        alias<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">&#39;ts&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;typescript&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 日志对于服务器来说也非常的重要  </span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger <span class="token operator">=</span> <span class="token keyword">new</span> <span class="token class-name">Logger</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      prefix<span class="token operator">:</span> <span class="token string">&#39;[egg-scripts] &#39;</span><span class="token punctuation">,</span>
+      time<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">get</span> <span class="token function">context</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// 环境信息 以及参数</span>
+    <span class="token keyword">const</span> context <span class="token operator">=</span> <span class="token keyword">super</span><span class="token punctuation">.</span>context<span class="token punctuation">;</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> argv<span class="token punctuation">,</span> execArgvObj<span class="token punctuation">,</span> cwd <span class="token punctuation">}</span> <span class="token operator">=</span> context<span class="token punctuation">;</span>
+
+    <span class="token comment">// read `egg.typescript` from package.json</span>
+    <span class="token keyword">let</span> baseDir <span class="token operator">=</span> argv<span class="token punctuation">.</span>_<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">||</span> cwd<span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>path<span class="token punctuation">.</span><span class="token function">isAbsolute</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">)</span><span class="token punctuation">)</span> baseDir <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>cwd<span class="token punctuation">,</span> baseDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> pkgFile <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">,</span> <span class="token string">&#39;package.json&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>fs<span class="token punctuation">.</span><span class="token function">existsSync</span><span class="token punctuation">(</span>pkgFile<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> pkgInfo <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span>pkgFile<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>pkgInfo <span class="token operator">&amp;&amp;</span> pkgInfo<span class="token punctuation">.</span>egg <span class="token operator">&amp;&amp;</span> pkgInfo<span class="token punctuation">.</span>egg<span class="token punctuation">.</span>typescript<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        argv<span class="token punctuation">.</span>sourcemap <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token comment">// execArgv</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argv<span class="token punctuation">.</span>sourcemap<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      execArgvObj<span class="token punctuation">.</span>require <span class="token operator">=</span> execArgvObj<span class="token punctuation">.</span>require <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">;</span>
+      execArgvObj<span class="token punctuation">.</span>require<span class="token punctuation">.</span><span class="token function">push</span><span class="token punctuation">(</span>require<span class="token punctuation">.</span><span class="token function">resolve</span><span class="token punctuation">(</span><span class="token string">&#39;source-map-support/register&#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    argv<span class="token punctuation">.</span>sourcemap <span class="token operator">=</span> argv<span class="token punctuation">.</span>typescript <span class="token operator">=</span> argv<span class="token punctuation">.</span>ts <span class="token operator">=</span> <span class="token keyword">undefined</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">return</span> context<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token function">exit</span><span class="token punctuation">(</span><span class="token parameter">code</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    process<span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> Command<span class="token punctuation">;</span>
+
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989442-91157">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&#39;use strict&#39;;
+
+const fs = require(&#39;fs&#39;);
+const path = require(&#39;path&#39;);
+const BaseCommand = require(&#39;common-bin&#39;);
+const Logger = require(&#39;zlogger&#39;);
+const helper = require(&#39;./helper&#39;);
+
+class Command extends BaseCommand {
+  constructor(rawArgv) {
+    super(rawArgv);
+
+    Object.assign(this.helper, helper);
+
+    // 参数的解析规则
+    this.parserOptions = {
+      removeAlias: true,
+      removeCamelCase: true,
+      execArgv: true,
+    };
+
+    // common-bin setter, don&#39;t care about override at sub class
+    // https://github.com/node-modules/common-bin/blob/master/lib/command.js#L158
+    this.options = {
+      sourcemap: {
+        description: &#39;whether enable sourcemap support, will load `source-map-support` etc&#39;,
+        type: &#39;boolean&#39;,
+        alias: [ &#39;ts&#39;, &#39;typescript&#39; ],
+      },
+    };
+
+    // 日志对于服务器来说也非常的重要  
+    this.logger = new Logger({
+      prefix: &#39;[egg-scripts] &#39;,
+      time: false,
+    });
+  }
+
+  get context() {
+    // 环境信息 以及参数
+    const context = super.context;
+    const { argv, execArgvObj, cwd } = context;
+
+    // read `egg.typescript` from package.json
+    let baseDir = argv._[0] || cwd;
+    if (!path.isAbsolute(baseDir)) baseDir = path.join(cwd, baseDir);
+    const pkgFile = path.join(baseDir, &#39;package.json&#39;);
+    if (fs.existsSync(pkgFile)) {
+      const pkgInfo = require(pkgFile);
+      if (pkgInfo &amp;&amp; pkgInfo.egg &amp;&amp; pkgInfo.egg.typescript) {
+        argv.sourcemap = true;
+      }
+    }
+
+    // execArgv
+    if (argv.sourcemap) {
+      execArgvObj.require = execArgvObj.require || [];
+      execArgvObj.require.push(require.resolve(&#39;source-map-support/register&#39;));
+    }
+
+    argv.sourcemap = argv.typescript = argv.ts = undefined;
+
+    return context;
+  }
+
+  exit(code) {
+    process.exit(code);
+  }
+}
+
+module.exports = Command;
+
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989442-91157" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br></div></div><h4 id="zlogger"><a class="header-anchor" href="#zlogger" aria-hidden="true">#</a> zlogger</h4><p>Egg底层依赖的log库。</p><p>支持的功能：</p><ul><li>✔︎ Extends <a href="https://nodejs.org/api/console.html#console_new_console_stdout_stderr" target="_blank" rel="noopener noreferrer">Console</a></li><li>✔︎ Support custom prefix before every line</li><li>✔︎ Support custom stdout and stderr</li><li>✔︎ Support print time</li><li>✔︎ Support child logger</li><li>✔︎ Support logger level</li></ul><p><a href="https://github.com/node-modules/zlogger" target="_blank" rel="noopener noreferrer">https://github.com/node-modules/zlogger</a></p><h4 id="startcommand"><a class="header-anchor" href="#startcommand" aria-hidden="true">#</a> StartCommand</h4><div class="language-js line-numbers-mode"><pre><code><span class="token string">&#39;use strict&#39;</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> path <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;path&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">const</span> Command <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;../command&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> debug <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;debug&#39;</span><span class="token punctuation">)</span><span class="token punctuation">(</span><span class="token string">&#39;egg-script:start&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> <span class="token punctuation">{</span> execFile <span class="token punctuation">}</span> <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;mz/child_process&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> fs <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;mz/fs&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> homedir <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;node-homedir&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> mkdirp <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;mz-modules/mkdirp&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> moment <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;moment&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> sleep <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;mz-modules/sleep&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token keyword">const</span> spawn <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;child_process&#39;</span><span class="token punctuation">)</span><span class="token punctuation">.</span>spawn<span class="token punctuation">;</span>
+<span class="token comment">// 工具库</span>
+<span class="token keyword">const</span> utils <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span><span class="token string">&#39;egg-utils&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+<span class="token keyword">class</span> <span class="token class-name">StartCommand</span> <span class="token keyword">extends</span> <span class="token class-name">Command</span> <span class="token punctuation">{</span>
+  <span class="token function">constructor</span><span class="token punctuation">(</span><span class="token parameter">rawArgv</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">super</span><span class="token punctuation">(</span>rawArgv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>usage <span class="token operator">=</span> <span class="token string">&#39;Usage: egg-scripts start [options] [baseDir]&#39;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">//自定义方法</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>serverBin <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>__dirname<span class="token punctuation">,</span> <span class="token string">&#39;../start-cluster&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// 参数定义</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>options <span class="token operator">=</span> <span class="token punctuation">{</span>
+      <span class="token comment">// 进程名称</span>
+      title<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;process title description, use for kill grep, default to `egg-server-${APP_NAME}`&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token comment">// 指定创建多少个子进程</span>
+      workers<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;numbers of app workers, default to `os.cpus().length`&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;number&#39;</span><span class="token punctuation">,</span>
+        alias<span class="token operator">:</span> <span class="token punctuation">[</span> <span class="token string">&#39;c&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;cluster&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">,</span>
+        <span class="token keyword">default</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">EGG_WORKERS</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+
+      port<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;listening port, default to `process.<wbr>env.PORT`&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;number&#39;</span><span class="token punctuation">,</span>
+        alias<span class="token operator">:</span> <span class="token string">&#39;p&#39;</span><span class="token punctuation">,</span>
+        <span class="token keyword">default</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">PORT</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      env<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;server env, default to `process.<wbr>env.EGG_SERVER_ENV`&#39;</span><span class="token punctuation">,</span>
+        <span class="token keyword">default</span><span class="token operator">:</span> process<span class="token punctuation">.</span>env<span class="token punctuation">.</span><span class="token constant">EGG_SERVER_ENV</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token comment">// egg业务代码</span>
+      framework<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;specify framework that can be absolute path or npm package&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      daemon<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;whether run at background daemon mode&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;boolean&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      stdout<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;customize stdout file&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      stderr<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;customize stderr file&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      timeout<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;the maximum timeout when app starts&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;number&#39;</span><span class="token punctuation">,</span>
+        <span class="token keyword">default</span><span class="token operator">:</span> <span class="token number">300</span> <span class="token operator">*</span> <span class="token number">1000</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      <span class="token string">&#39;ignore-stderr&#39;</span><span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;whether ignore stderr when app starts&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;boolean&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+      node<span class="token operator">:</span> <span class="token punctuation">{</span>
+        description<span class="token operator">:</span> <span class="token string">&#39;customize node command path&#39;</span><span class="token punctuation">,</span>
+        type<span class="token operator">:</span> <span class="token string">&#39;string&#39;</span><span class="token punctuation">,</span>
+      <span class="token punctuation">}</span><span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">get</span> <span class="token function">description</span><span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> <span class="token string">&#39;Start server at prod mode&#39;</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token operator">*</span> <span class="token function">run</span><span class="token punctuation">(</span><span class="token parameter">context</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> <span class="token punctuation">{</span> argv<span class="token punctuation">,</span> env<span class="token punctuation">,</span> cwd<span class="token punctuation">,</span> execArgv <span class="token punctuation">}</span> <span class="token operator">=</span> context<span class="token punctuation">;</span>
+
+    <span class="token comment">// 当前用户的根目录</span>
+    <span class="token keyword">const</span> <span class="token constant">HOME</span> <span class="token operator">=</span> <span class="token function">homedir</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// 日志文件路径</span>
+    <span class="token keyword">const</span> logDir <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token constant">HOME</span><span class="token punctuation">,</span> <span class="token string">&#39;logs&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// egg-script start </span>
+    <span class="token comment">// egg-script start ./server</span>
+    <span class="token comment">// egg-script start /opt/app</span>
+    <span class="token keyword">let</span> baseDir <span class="token operator">=</span> argv<span class="token punctuation">.</span>_<span class="token punctuation">[</span><span class="token number">0</span><span class="token punctuation">]</span> <span class="token operator">||</span> cwd<span class="token punctuation">;</span>
+
+    <span class="token comment">// baseDir处理</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>path<span class="token punctuation">.</span><span class="token function">isAbsolute</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">)</span><span class="token punctuation">)</span> baseDir <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>cwd<span class="token punctuation">,</span> baseDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    argv<span class="token punctuation">.</span>baseDir <span class="token operator">=</span> baseDir<span class="token punctuation">;</span>
+
+    <span class="token comment">// 是否守护</span>
+    <span class="token keyword">const</span> isDaemon <span class="token operator">=</span> argv<span class="token punctuation">.</span>daemon<span class="token punctuation">;</span>
+    <span class="token comment">// 获取 framework 地址</span>
+    argv<span class="token punctuation">.</span>framework <span class="token operator">=</span> <span class="token keyword">yield</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getFrameworkPath</span><span class="token punctuation">(</span><span class="token punctuation">{</span>
+      framework<span class="token operator">:</span> argv<span class="token punctuation">.</span>framework<span class="token punctuation">,</span>
+      baseDir<span class="token punctuation">,</span>
+    <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>frameworkName <span class="token operator">=</span> <span class="token keyword">yield</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">getFrameworkName</span><span class="token punctuation">(</span>argv<span class="token punctuation">.</span>framework<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> pkgInfo <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">,</span> <span class="token string">&#39;package.json&#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    argv<span class="token punctuation">.</span>title <span class="token operator">=</span> argv<span class="token punctuation">.</span>title <span class="token operator">||</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">egg-server-</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>pkgInfo<span class="token punctuation">.</span>name<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">;</span>
+
+    argv<span class="token punctuation">.</span>stdout <span class="token operator">=</span> argv<span class="token punctuation">.</span>stdout <span class="token operator">||</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>logDir<span class="token punctuation">,</span> <span class="token string">&#39;master-stdout.log&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    argv<span class="token punctuation">.</span>stderr <span class="token operator">=</span> argv<span class="token punctuation">.</span>stderr <span class="token operator">||</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>logDir<span class="token punctuation">,</span> <span class="token string">&#39;master-stderr.log&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// normalize env</span>
+    env<span class="token punctuation">.</span><span class="token constant">HOME</span> <span class="token operator">=</span> <span class="token constant">HOME</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// egg-scripts start 会把环境变为生产环境</span>
+    env<span class="token punctuation">.</span><span class="token constant">NODE_ENV</span> <span class="token operator">=</span> <span class="token string">&#39;production&#39;</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// it makes env big but more robust</span>
+    env<span class="token punctuation">.</span><span class="token constant">PATH</span> <span class="token operator">=</span> env<span class="token punctuation">.</span>Path <span class="token operator">=</span> <span class="token punctuation">[</span>
+      <span class="token comment">// for nodeinstall</span>
+      path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">,</span> <span class="token string">&#39;node_modules/.bin&#39;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">// support `.node/bin`, due to npm5 will remove `node_modules/.bin`</span>
+      path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>baseDir<span class="token punctuation">,</span> <span class="token string">&#39;.node/bin&#39;</span><span class="token punctuation">)</span><span class="token punctuation">,</span>
+      <span class="token comment">// adjust env for win</span>
+      env<span class="token punctuation">.</span><span class="token constant">PATH</span> <span class="token operator">||</span> env<span class="token punctuation">.</span>Path<span class="token punctuation">,</span>
+    <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">filter</span><span class="token punctuation">(</span><span class="token parameter">x</span> <span class="token operator">=&gt;</span> <span class="token operator">!</span><span class="token operator">!</span>x<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span>delimiter<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// for alinode</span>
+    env<span class="token punctuation">.</span><span class="token constant">ENABLE_NODE_LOG</span> <span class="token operator">=</span> <span class="token string">&#39;YES&#39;</span><span class="token punctuation">;</span>
+    env<span class="token punctuation">.</span><span class="token constant">NODE_LOG_DIR</span> <span class="token operator">=</span> env<span class="token punctuation">.</span><span class="token constant">NODE_LOG_DIR</span> <span class="token operator">||</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>logDir<span class="token punctuation">,</span> <span class="token string">&#39;alinode&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">yield</span> <span class="token function">mkdirp</span><span class="token punctuation">(</span>env<span class="token punctuation">.</span><span class="token constant">NODE_LOG_DIR</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// cli argv -&gt; process.<wbr>env.EGG_SERVER_ENV -&gt; `undefined` then egg will use `prod`</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>argv<span class="token punctuation">.</span>env<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">// if undefined, should not pass key due to `spwan`, https://github.com/nodejs/node/blob/master/lib/child_process.js#L470</span>
+      env<span class="token punctuation">.</span><span class="token constant">EGG_SERVER_ENV</span> <span class="token operator">=</span> argv<span class="token punctuation">.</span>env<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">const</span> command <span class="token operator">=</span> argv<span class="token punctuation">.</span>node <span class="token operator">||</span> <span class="token string">&#39;node&#39;</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">const</span> options <span class="token operator">=</span> <span class="token punctuation">{</span>
+      execArgv<span class="token punctuation">,</span>
+      env<span class="token punctuation">,</span>
+      stdio<span class="token operator">:</span> <span class="token string">&#39;inherit&#39;</span><span class="token punctuation">,</span>
+      detached<span class="token operator">:</span> <span class="token boolean">false</span><span class="token punctuation">,</span>  <span class="token comment">// 在创建子进程的时候可以脱离父亲</span>
+    <span class="token punctuation">}</span><span class="token punctuation">;</span>
+
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&#39;Starting %s application at %s&#39;</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>frameworkName<span class="token punctuation">,</span> baseDir<span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// remove unused properties from stringify, alias had been remove by `removeAlias`</span>
+    <span class="token keyword">const</span> ignoreKeys <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token string">&#39;_&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;$0&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;env&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;daemon&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;stdout&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;stderr&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;timeout&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;ignore-stderr&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;node&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">const</span> clusterOptions <span class="token operator">=</span> <span class="token function">stringify</span><span class="token punctuation">(</span>argv<span class="token punctuation">,</span> ignoreKeys<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// Note: `spawn` is not like `fork`, had to pass `execArgv` youself</span>
+    <span class="token keyword">const</span> eggArgs <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token operator">...</span><span class="token punctuation">(</span>execArgv <span class="token operator">||</span> <span class="token punctuation">[</span><span class="token punctuation">]</span><span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>serverBin<span class="token punctuation">,</span> clusterOptions<span class="token punctuation">,</span> <span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">--title=</span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>argv<span class="token punctuation">.</span>title<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&#39;Run node %s&#39;</span><span class="token punctuation">,</span> eggArgs<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">&#39; &#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+    <span class="token comment">// whether run in the background.</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>isDaemon<span class="token punctuation">)</span> <span class="token punctuation">{</span> <span class="token comment">// 守护进程 </span>
+
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token template-string"><span class="token template-punctuation string">`</span><span class="token string">Save log file to </span><span class="token interpolation"><span class="token interpolation-punctuation punctuation">${</span>logDir<span class="token interpolation-punctuation punctuation">}</span></span><span class="token template-punctuation string">`</span></span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token keyword">const</span> <span class="token punctuation">[</span> stdout<span class="token punctuation">,</span> stderr <span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">yield</span> <span class="token punctuation">[</span> <span class="token function">getRotatelog</span><span class="token punctuation">(</span>argv<span class="token punctuation">.</span>stdout<span class="token punctuation">)</span><span class="token punctuation">,</span> <span class="token function">getRotatelog</span><span class="token punctuation">(</span>argv<span class="token punctuation">.</span>stderr<span class="token punctuation">)</span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+      options<span class="token punctuation">.</span>stdio <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token string">&#39;ignore&#39;</span><span class="token punctuation">,</span> stdout<span class="token punctuation">,</span> stderr<span class="token punctuation">,</span> <span class="token string">&#39;ipc&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+      options<span class="token punctuation">.</span>detached <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+      
+      <span class="token comment">// debug(&#39;Run spawn `%s %s`&#39;, command, eggArgs.join(&#39; &#39;));</span>
+      <span class="token comment">// debug(&#39;=======&#39;, command, eggArgs, options );</span>
+
+      <span class="token keyword">const</span> child <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>child <span class="token operator">=</span> <span class="token function">spawn</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span> eggArgs<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>isReady <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+      child<span class="token punctuation">.</span><span class="token function">on</span><span class="token punctuation">(</span><span class="token string">&#39;message&#39;</span><span class="token punctuation">,</span> <span class="token parameter">msg</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token comment">/* istanbul ignore else */</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>msg <span class="token operator">&amp;&amp;</span> msg<span class="token punctuation">.</span>action <span class="token operator">===</span> <span class="token string">&#39;egg-ready&#39;</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>isReady <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">info</span><span class="token punctuation">(</span><span class="token string">&#39;%s started on %s&#39;</span><span class="token punctuation">,</span> <span class="token keyword">this</span><span class="token punctuation">.</span>frameworkName<span class="token punctuation">,</span> msg<span class="token punctuation">.</span>data<span class="token punctuation">.</span>address<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          child<span class="token punctuation">.</span><span class="token function">unref</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          child<span class="token punctuation">.</span><span class="token function">disconnect</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+          <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">0</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// check start status</span>
+      <span class="token keyword">yield</span> <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">checkStatus</span><span class="token punctuation">(</span>argv<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">else</span> <span class="token punctuation">{</span>
+      options<span class="token punctuation">.</span>stdio <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token string">&#39;inherit&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;inherit&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;inherit&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;ipc&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">;</span>
+      <span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">&#39;Run spawn `%s %s`&#39;</span><span class="token punctuation">,</span> command<span class="token punctuation">,</span> eggArgs<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">&#39; &#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">const</span> child <span class="token operator">=</span> <span class="token keyword">this</span><span class="token punctuation">.</span>child <span class="token operator">=</span> <span class="token function">spawn</span><span class="token punctuation">(</span>command<span class="token punctuation">,</span> eggArgs<span class="token punctuation">,</span> options<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      child<span class="token punctuation">.</span><span class="token function">once</span><span class="token punctuation">(</span><span class="token string">&#39;exit&#39;</span><span class="token punctuation">,</span> <span class="token parameter">code</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        <span class="token comment">// command should exit after child process exit</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span>code<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+      <span class="token comment">// attach master signal to child</span>
+      <span class="token keyword">let</span> signal<span class="token punctuation">;</span>
+      <span class="token punctuation">[</span> <span class="token string">&#39;SIGINT&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;SIGQUIT&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;SIGTERM&#39;</span> <span class="token punctuation">]</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">event</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+        process<span class="token punctuation">.</span><span class="token function">once</span><span class="token punctuation">(</span>event<span class="token punctuation">,</span> <span class="token punctuation">(</span><span class="token punctuation">)</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+          <span class="token function">debug</span><span class="token punctuation">(</span><span class="token string">&#39;Kill child %s with %s&#39;</span><span class="token punctuation">,</span> child<span class="token punctuation">.</span>pid<span class="token punctuation">,</span> signal<span class="token punctuation">)</span><span class="token punctuation">;</span>
+          child<span class="token punctuation">.</span><span class="token function">kill</span><span class="token punctuation">(</span>event<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token operator">*</span> <span class="token function">getFrameworkPath</span><span class="token punctuation">(</span><span class="token parameter">params</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">return</span> utils<span class="token punctuation">.</span><span class="token function">getFrameworkPath</span><span class="token punctuation">(</span>params<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token operator">*</span> <span class="token function">getFrameworkName</span><span class="token punctuation">(</span><span class="token parameter">framework</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">const</span> pkgPath <span class="token operator">=</span> path<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span>framework<span class="token punctuation">,</span> <span class="token string">&#39;package.json&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> name <span class="token operator">=</span> <span class="token string">&#39;egg&#39;</span><span class="token punctuation">;</span>
+    <span class="token keyword">try</span> <span class="token punctuation">{</span>
+      <span class="token keyword">const</span> pkg <span class="token operator">=</span> <span class="token function">require</span><span class="token punctuation">(</span>pkgPath<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token comment">/* istanbul ignore else */</span>
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>pkg<span class="token punctuation">.</span>name<span class="token punctuation">)</span> name <span class="token operator">=</span> pkg<span class="token punctuation">.</span>name<span class="token punctuation">;</span>
+    <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>_<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token comment">/* istanbul next */</span>
+    <span class="token punctuation">}</span>
+    <span class="token keyword">return</span> name<span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token operator">*</span> <span class="token function">checkStatus</span><span class="token punctuation">(</span><span class="token punctuation">{</span> stderr<span class="token punctuation">,</span> timeout<span class="token punctuation">,</span> <span class="token string">&#39;ignore-stderr&#39;</span><span class="token operator">:</span> ignoreStdErr <span class="token punctuation">}</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token keyword">let</span> count <span class="token operator">=</span> <span class="token number">0</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> hasError <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+    <span class="token keyword">let</span> isSuccess <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+    timeout <span class="token operator">=</span> timeout <span class="token operator">/</span> <span class="token number">1000</span><span class="token punctuation">;</span>
+    <span class="token keyword">while</span> <span class="token punctuation">(</span><span class="token operator">!</span><span class="token keyword">this</span><span class="token punctuation">.</span>isReady<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> stat <span class="token operator">=</span> <span class="token keyword">yield</span> fs<span class="token punctuation">.</span><span class="token function">stat</span><span class="token punctuation">(</span>stderr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">if</span> <span class="token punctuation">(</span>stat <span class="token operator">&amp;&amp;</span> stat<span class="token punctuation">.</span>size <span class="token operator">&gt;</span> <span class="token number">0</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+          hasError <span class="token operator">=</span> <span class="token boolean">true</span><span class="token punctuation">;</span>
+          <span class="token keyword">break</span><span class="token punctuation">;</span>
+        <span class="token punctuation">}</span>
+      <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>_<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token comment">// nothing</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">if</span> <span class="token punctuation">(</span>count <span class="token operator">&gt;=</span> timeout<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;Start failed, %ds timeout&#39;</span><span class="token punctuation">,</span> timeout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        isSuccess <span class="token operator">=</span> <span class="token boolean">false</span><span class="token punctuation">;</span>
+        <span class="token keyword">break</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      <span class="token keyword">yield</span> <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">log</span><span class="token punctuation">(</span><span class="token string">&#39;Wait Start: %d...&#39;</span><span class="token punctuation">,</span> <span class="token operator">++</span>count<span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span>hasError<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">try</span> <span class="token punctuation">{</span>
+        <span class="token keyword">const</span> args <span class="token operator">=</span> <span class="token punctuation">[</span> <span class="token string">&#39;-n&#39;</span><span class="token punctuation">,</span> <span class="token string">&#39;100&#39;</span><span class="token punctuation">,</span> stderr <span class="token punctuation">]</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;tail %s&#39;</span><span class="token punctuation">,</span> args<span class="token punctuation">.</span><span class="token function">join</span><span class="token punctuation">(</span><span class="token string">&#39; &#39;</span><span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">const</span> <span class="token punctuation">[</span> stdout <span class="token punctuation">]</span> <span class="token operator">=</span> <span class="token keyword">yield</span> <span class="token function">execFile</span><span class="token punctuation">(</span><span class="token string">&#39;tail&#39;</span><span class="token punctuation">,</span> args<span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;Got error when startup: &#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span>stdout<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span> <span class="token keyword">catch</span> <span class="token punctuation">(</span>err<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+        <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;ignore tail error: %s&#39;</span><span class="token punctuation">,</span> err<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token punctuation">}</span>
+
+      isSuccess <span class="token operator">=</span> ignoreStdErr<span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;Start got error, see %s&#39;</span><span class="token punctuation">,</span> stderr<span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>logger<span class="token punctuation">.</span><span class="token function">error</span><span class="token punctuation">(</span><span class="token string">&#39;Or use `--ignore-stderr` to ignore stderr at startup.&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>isSuccess<span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span>child<span class="token punctuation">.</span><span class="token function">kill</span><span class="token punctuation">(</span><span class="token string">&#39;SIGTERM&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">yield</span> <span class="token function">sleep</span><span class="token punctuation">(</span><span class="token number">1000</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+      <span class="token keyword">this</span><span class="token punctuation">.</span><span class="token function">exit</span><span class="token punctuation">(</span><span class="token number">1</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span><span class="token operator">*</span> <span class="token function">getRotatelog</span><span class="token punctuation">(</span><span class="token parameter">logfile</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">yield</span> <span class="token function">mkdirp</span><span class="token punctuation">(</span>path<span class="token punctuation">.</span><span class="token function">dirname</span><span class="token punctuation">(</span>logfile<span class="token punctuation">)</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+
+  <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token keyword">yield</span> fs<span class="token punctuation">.</span><span class="token function">exists</span><span class="token punctuation">(</span>logfile<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+    <span class="token comment">// format style: .20150602.193100</span>
+    <span class="token keyword">const</span> timestamp <span class="token operator">=</span> <span class="token function">moment</span><span class="token punctuation">(</span><span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">format</span><span class="token punctuation">(</span><span class="token string">&#39;.YYYYMMDD.HHmmss&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+    <span class="token comment">// Note: rename last log to next start time, not when last log file created</span>
+    <span class="token keyword">yield</span> fs<span class="token punctuation">.</span><span class="token function">rename</span><span class="token punctuation">(</span>logfile<span class="token punctuation">,</span> logfile <span class="token operator">+</span> timestamp<span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token punctuation">}</span>
+
+  <span class="token keyword">return</span> <span class="token keyword">yield</span> fs<span class="token punctuation">.</span><span class="token function">open</span><span class="token punctuation">(</span>logfile<span class="token punctuation">,</span> <span class="token string">&#39;a&#39;</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+<span class="token keyword">function</span> <span class="token function">stringify</span><span class="token punctuation">(</span><span class="token parameter">obj<span class="token punctuation">,</span> ignore</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+  <span class="token keyword">const</span> result <span class="token operator">=</span> <span class="token punctuation">{</span><span class="token punctuation">}</span><span class="token punctuation">;</span>
+  Object<span class="token punctuation">.</span><span class="token function">keys</span><span class="token punctuation">(</span>obj<span class="token punctuation">)</span><span class="token punctuation">.</span><span class="token function">forEach</span><span class="token punctuation">(</span><span class="token parameter">key</span> <span class="token operator">=&gt;</span> <span class="token punctuation">{</span>
+    <span class="token keyword">if</span> <span class="token punctuation">(</span><span class="token operator">!</span>ignore<span class="token punctuation">.</span><span class="token function">includes</span><span class="token punctuation">(</span>key<span class="token punctuation">)</span><span class="token punctuation">)</span> <span class="token punctuation">{</span>
+      result<span class="token punctuation">[</span>key<span class="token punctuation">]</span> <span class="token operator">=</span> obj<span class="token punctuation">[</span>key<span class="token punctuation">]</span><span class="token punctuation">;</span>
+    <span class="token punctuation">}</span>
+  <span class="token punctuation">}</span><span class="token punctuation">)</span><span class="token punctuation">;</span>
+  <span class="token keyword">return</span> <span class="token constant">JSON</span><span class="token punctuation">.</span><span class="token function">stringify</span><span class="token punctuation">(</span>result<span class="token punctuation">)</span><span class="token punctuation">;</span>
+<span class="token punctuation">}</span>
+
+module<span class="token punctuation">.</span>exports <span class="token operator">=</span> StartCommand<span class="token punctuation">;</span>
+
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989443-55412">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="&#39;use strict&#39;;
+
+const path = require(&#39;path&#39;);
+
+const Command = require(&#39;../command&#39;);
+const debug = require(&#39;debug&#39;)(&#39;egg-script:start&#39;);
+const { execFile } = require(&#39;mz/child_process&#39;);
+const fs = require(&#39;mz/fs&#39;);
+const homedir = require(&#39;node-homedir&#39;);
+const mkdirp = require(&#39;mz-modules/mkdirp&#39;);
+const moment = require(&#39;moment&#39;);
+const sleep = require(&#39;mz-modules/sleep&#39;);
+const spawn = require(&#39;child_process&#39;).spawn;
+// 工具库
+const utils = require(&#39;egg-utils&#39;);
+
+class StartCommand extends Command {
+  constructor(rawArgv) {
+    super(rawArgv);
+    this.usage = &#39;Usage: egg-scripts start [options] [baseDir]&#39;;
+
+    //自定义方法
+    this.serverBin = path.join(__dirname, &#39;../start-cluster&#39;);
+    // 参数定义
+    this.options = {
+      // 进程名称
+      title: {
+        description: &#39;process title description, use for kill grep, default to `egg-server-${APP_NAME}`&#39;,
+        type: &#39;string&#39;,
+      },
+      // 指定创建多少个子进程
+      workers: {
+        description: &#39;numbers of app workers, default to `os.cpus().length`&#39;,
+        type: &#39;number&#39;,
+        alias: [ &#39;c&#39;, &#39;cluster&#39; ],
+        default: process.&lt;wbr/&gt;env.EGG_WORKERS,
+      },
+
+      port: {
+        description: &#39;listening port, default to `process.&lt;wbr/&gt;env.PORT`&#39;,
+        type: &#39;number&#39;,
+        alias: &#39;p&#39;,
+        default: process.&lt;wbr/&gt;env.PORT,
+      },
+      env: {
+        description: &#39;server env, default to `process.&lt;wbr/&gt;env.EGG_SERVER_ENV`&#39;,
+        default: process.&lt;wbr/&gt;env.EGG_SERVER_ENV,
+      },
+      // egg业务代码
+      framework: {
+        description: &#39;specify framework that can be absolute path or npm package&#39;,
+        type: &#39;string&#39;,
+      },
+      daemon: {
+        description: &#39;whether run at background daemon mode&#39;,
+        type: &#39;boolean&#39;,
+      },
+      stdout: {
+        description: &#39;customize stdout file&#39;,
+        type: &#39;string&#39;,
+      },
+      stderr: {
+        description: &#39;customize stderr file&#39;,
+        type: &#39;string&#39;,
+      },
+      timeout: {
+        description: &#39;the maximum timeout when app starts&#39;,
+        type: &#39;number&#39;,
+        default: 300 * 1000,
+      },
+      &#39;ignore-stderr&#39;: {
+        description: &#39;whether ignore stderr when app starts&#39;,
+        type: &#39;boolean&#39;,
+      },
+      node: {
+        description: &#39;customize node command path&#39;,
+        type: &#39;string&#39;,
+      },
+    };
+  }
+
+  get description() {
+    return &#39;Start server at prod mode&#39;;
+  }
+
+  * run(context) {
+    const { argv, env, cwd, execArgv } = context;
+
+    // 当前用户的根目录
+    const HOME = homedir();
+
+    // 日志文件路径
+    const logDir = path.join(HOME, &#39;logs&#39;);
+
+    // egg-script start 
+    // egg-script start ./server
+    // egg-script start /opt/app
+    let baseDir = argv._[0] || cwd;
+
+    // baseDir处理
+    if (!path.isAbsolute(baseDir)) baseDir = path.join(cwd, baseDir);
+    argv.baseDir = baseDir;
+
+    // 是否守护
+    const isDaemon = argv.daemon;
+    // 获取 framework 地址
+    argv.framework = yield this.getFrameworkPath({
+      framework: argv.framework,
+      baseDir,
+    });
+
+    this.frameworkName = yield this.getFrameworkName(argv.framework);
+
+    const pkgInfo = require(path.join(baseDir, &#39;package.json&#39;));
+    argv.title = argv.title || `egg-server-${pkgInfo.name}`;
+
+    argv.stdout = argv.stdout || path.join(logDir, &#39;master-stdout.log&#39;);
+    argv.stderr = argv.stderr || path.join(logDir, &#39;master-stderr.log&#39;);
+
+    // normalize env
+    env.HOME = HOME;
+
+    // egg-scripts start 会把环境变为生产环境
+    env.NODE_ENV = &#39;production&#39;;
+
+    // it makes env big but more robust
+    env.PATH = env.Path = [
+      // for nodeinstall
+      path.join(baseDir, &#39;node_modules/.bin&#39;),
+      // support `.node/bin`, due to npm5 will remove `node_modules/.bin`
+      path.join(baseDir, &#39;.node/bin&#39;),
+      // adjust env for win
+      env.PATH || env.Path,
+    ].filter(x =&gt; !!x).join(path.delimiter);
+
+    // for alinode
+    env.ENABLE_NODE_LOG = &#39;YES&#39;;
+    env.NODE_LOG_DIR = env.NODE_LOG_DIR || path.join(logDir, &#39;alinode&#39;);
+    yield mkdirp(env.NODE_LOG_DIR);
+
+    // cli argv -&gt; process.&lt;wbr/&gt;env.EGG_SERVER_ENV -&gt; `undefined` then egg will use `prod`
+    if (argv.env) {
+      // if undefined, should not pass key due to `spwan`, https://github.com/nodejs/node/blob/master/lib/child_process.js#L470
+      env.EGG_SERVER_ENV = argv.env;
+    }
+
+    const command = argv.node || &#39;node&#39;;
+
+    const options = {
+      execArgv,
+      env,
+      stdio: &#39;inherit&#39;,
+      detached: false,  // 在创建子进程的时候可以脱离父亲
+    };
+
+    this.logger.info(&#39;Starting %s application at %s&#39;, this.frameworkName, baseDir);
+
+    // remove unused properties from stringify, alias had been remove by `removeAlias`
+    const ignoreKeys = [ &#39;_&#39;, &#39;$0&#39;, &#39;env&#39;, &#39;daemon&#39;, &#39;stdout&#39;, &#39;stderr&#39;, &#39;timeout&#39;, &#39;ignore-stderr&#39;, &#39;node&#39; ];
+    const clusterOptions = stringify(argv, ignoreKeys);
+    // Note: `spawn` is not like `fork`, had to pass `execArgv` youself
+    const eggArgs = [ ...(execArgv || []), this.serverBin, clusterOptions, `--title=${argv.title}` ];
+    this.logger.info(&#39;Run node %s&#39;, eggArgs.join(&#39; &#39;));
+
+    // whether run in the background.
+    if (isDaemon) { // 守护进程 
+
+      this.logger.info(`Save log file to ${logDir}`);
+
+      const [ stdout, stderr ] = yield [ getRotatelog(argv.stdout), getRotatelog(argv.stderr) ];
+      options.stdio = [ &#39;ignore&#39;, stdout, stderr, &#39;ipc&#39; ];
+      options.detached = true;
+      
+      // debug(&#39;Run spawn `%s %s`&#39;, command, eggArgs.join(&#39; &#39;));
+      // debug(&#39;=======&#39;, command, eggArgs, options );
+
+      const child = this.child = spawn(command, eggArgs, options);
+      this.isReady = false;
+      child.on(&#39;message&#39;, msg =&gt; {
+        /* istanbul ignore else */
+        if (msg &amp;&amp; msg.action === &#39;egg-ready&#39;) {
+          this.isReady = true;
+          this.logger.info(&#39;%s started on %s&#39;, this.frameworkName, msg.data.address);
+          child.unref();
+          child.disconnect();
+          this.exit(0);
+        }
+      });
+
+      // check start status
+      yield this.checkStatus(argv);
+    } else {
+      options.stdio = [ &#39;inherit&#39;, &#39;inherit&#39;, &#39;inherit&#39;, &#39;ipc&#39; ];
+      debug(&#39;Run spawn `%s %s`&#39;, command, eggArgs.join(&#39; &#39;));
+      const child = this.child = spawn(command, eggArgs, options);
+      child.once(&#39;exit&#39;, code =&gt; {
+        // command should exit after child process exit
+        this.exit(code);
+      });
+
+      // attach master signal to child
+      let signal;
+      [ &#39;SIGINT&#39;, &#39;SIGQUIT&#39;, &#39;SIGTERM&#39; ].forEach(event =&gt; {
+        process.once(event, () =&gt; {
+          debug(&#39;Kill child %s with %s&#39;, child.pid, signal);
+          child.kill(event);
+        });
+      });
+    }
+  }
+
+  * getFrameworkPath(params) {
+    return utils.getFrameworkPath(params);
+  }
+
+  * getFrameworkName(framework) {
+    const pkgPath = path.join(framework, &#39;package.json&#39;);
+    let name = &#39;egg&#39;;
+    try {
+      const pkg = require(pkgPath);
+      /* istanbul ignore else */
+      if (pkg.name) name = pkg.name;
+    } catch (_) {
+      /* istanbul next */
+    }
+    return name;
+  }
+
+  * checkStatus({ stderr, timeout, &#39;ignore-stderr&#39;: ignoreStdErr }) {
+    let count = 0;
+    let hasError = false;
+    let isSuccess = true;
+    timeout = timeout / 1000;
+    while (!this.isReady) {
+      try {
+        const stat = yield fs.stat(stderr);
+        if (stat &amp;&amp; stat.size &gt; 0) {
+          hasError = true;
+          break;
+        }
+      } catch (_) {
+        // nothing
+      }
+
+      if (count &gt;= timeout) {
+        this.logger.error(&#39;Start failed, %ds timeout&#39;, timeout);
+        isSuccess = false;
+        break;
+      }
+
+      yield sleep(1000);
+      this.logger.log(&#39;Wait Start: %d...&#39;, ++count);
+    }
+
+    if (hasError) {
+      try {
+        const args = [ &#39;-n&#39;, &#39;100&#39;, stderr ];
+        this.logger.error(&#39;tail %s&#39;, args.join(&#39; &#39;));
+        const [ stdout ] = yield execFile(&#39;tail&#39;, args);
+        this.logger.error(&#39;Got error when startup: &#39;);
+        this.logger.error(stdout);
+      } catch (err) {
+        this.logger.error(&#39;ignore tail error: %s&#39;, err);
+      }
+
+      isSuccess = ignoreStdErr;
+      this.logger.error(&#39;Start got error, see %s&#39;, stderr);
+      this.logger.error(&#39;Or use `--ignore-stderr` to ignore stderr at startup.&#39;);
+    }
+
+    if (!isSuccess) {
+      this.child.kill(&#39;SIGTERM&#39;);
+      yield sleep(1000);
+      this.exit(1);
+    }
+  }
+}
+
+function* getRotatelog(logfile) {
+  yield mkdirp(path.dirname(logfile));
+
+  if (yield fs.exists(logfile)) {
+    // format style: .20150602.193100
+    const timestamp = moment().format(&#39;.YYYYMMDD.HHmmss&#39;);
+    // Note: rename last log to next start time, not when last log file created
+    yield fs.rename(logfile, logfile + timestamp);
+  }
+
+  return yield fs.open(logfile, &#39;a&#39;);
+}
+
+function stringify(obj, ignore) {
+  const result = {};
+  Object.keys(obj).forEach(key =&gt; {
+    if (!ignore.includes(key)) {
+      result[key] = obj[key];
+    }
+  });
+  return JSON.stringify(result);
+}
+
+module.exports = StartCommand;
+
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989443-55412" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br><span class="line-number">8</span><br><span class="line-number">9</span><br><span class="line-number">10</span><br><span class="line-number">11</span><br><span class="line-number">12</span><br><span class="line-number">13</span><br><span class="line-number">14</span><br><span class="line-number">15</span><br><span class="line-number">16</span><br><span class="line-number">17</span><br><span class="line-number">18</span><br><span class="line-number">19</span><br><span class="line-number">20</span><br><span class="line-number">21</span><br><span class="line-number">22</span><br><span class="line-number">23</span><br><span class="line-number">24</span><br><span class="line-number">25</span><br><span class="line-number">26</span><br><span class="line-number">27</span><br><span class="line-number">28</span><br><span class="line-number">29</span><br><span class="line-number">30</span><br><span class="line-number">31</span><br><span class="line-number">32</span><br><span class="line-number">33</span><br><span class="line-number">34</span><br><span class="line-number">35</span><br><span class="line-number">36</span><br><span class="line-number">37</span><br><span class="line-number">38</span><br><span class="line-number">39</span><br><span class="line-number">40</span><br><span class="line-number">41</span><br><span class="line-number">42</span><br><span class="line-number">43</span><br><span class="line-number">44</span><br><span class="line-number">45</span><br><span class="line-number">46</span><br><span class="line-number">47</span><br><span class="line-number">48</span><br><span class="line-number">49</span><br><span class="line-number">50</span><br><span class="line-number">51</span><br><span class="line-number">52</span><br><span class="line-number">53</span><br><span class="line-number">54</span><br><span class="line-number">55</span><br><span class="line-number">56</span><br><span class="line-number">57</span><br><span class="line-number">58</span><br><span class="line-number">59</span><br><span class="line-number">60</span><br><span class="line-number">61</span><br><span class="line-number">62</span><br><span class="line-number">63</span><br><span class="line-number">64</span><br><span class="line-number">65</span><br><span class="line-number">66</span><br><span class="line-number">67</span><br><span class="line-number">68</span><br><span class="line-number">69</span><br><span class="line-number">70</span><br><span class="line-number">71</span><br><span class="line-number">72</span><br><span class="line-number">73</span><br><span class="line-number">74</span><br><span class="line-number">75</span><br><span class="line-number">76</span><br><span class="line-number">77</span><br><span class="line-number">78</span><br><span class="line-number">79</span><br><span class="line-number">80</span><br><span class="line-number">81</span><br><span class="line-number">82</span><br><span class="line-number">83</span><br><span class="line-number">84</span><br><span class="line-number">85</span><br><span class="line-number">86</span><br><span class="line-number">87</span><br><span class="line-number">88</span><br><span class="line-number">89</span><br><span class="line-number">90</span><br><span class="line-number">91</span><br><span class="line-number">92</span><br><span class="line-number">93</span><br><span class="line-number">94</span><br><span class="line-number">95</span><br><span class="line-number">96</span><br><span class="line-number">97</span><br><span class="line-number">98</span><br><span class="line-number">99</span><br><span class="line-number">100</span><br><span class="line-number">101</span><br><span class="line-number">102</span><br><span class="line-number">103</span><br><span class="line-number">104</span><br><span class="line-number">105</span><br><span class="line-number">106</span><br><span class="line-number">107</span><br><span class="line-number">108</span><br><span class="line-number">109</span><br><span class="line-number">110</span><br><span class="line-number">111</span><br><span class="line-number">112</span><br><span class="line-number">113</span><br><span class="line-number">114</span><br><span class="line-number">115</span><br><span class="line-number">116</span><br><span class="line-number">117</span><br><span class="line-number">118</span><br><span class="line-number">119</span><br><span class="line-number">120</span><br><span class="line-number">121</span><br><span class="line-number">122</span><br><span class="line-number">123</span><br><span class="line-number">124</span><br><span class="line-number">125</span><br><span class="line-number">126</span><br><span class="line-number">127</span><br><span class="line-number">128</span><br><span class="line-number">129</span><br><span class="line-number">130</span><br><span class="line-number">131</span><br><span class="line-number">132</span><br><span class="line-number">133</span><br><span class="line-number">134</span><br><span class="line-number">135</span><br><span class="line-number">136</span><br><span class="line-number">137</span><br><span class="line-number">138</span><br><span class="line-number">139</span><br><span class="line-number">140</span><br><span class="line-number">141</span><br><span class="line-number">142</span><br><span class="line-number">143</span><br><span class="line-number">144</span><br><span class="line-number">145</span><br><span class="line-number">146</span><br><span class="line-number">147</span><br><span class="line-number">148</span><br><span class="line-number">149</span><br><span class="line-number">150</span><br><span class="line-number">151</span><br><span class="line-number">152</span><br><span class="line-number">153</span><br><span class="line-number">154</span><br><span class="line-number">155</span><br><span class="line-number">156</span><br><span class="line-number">157</span><br><span class="line-number">158</span><br><span class="line-number">159</span><br><span class="line-number">160</span><br><span class="line-number">161</span><br><span class="line-number">162</span><br><span class="line-number">163</span><br><span class="line-number">164</span><br><span class="line-number">165</span><br><span class="line-number">166</span><br><span class="line-number">167</span><br><span class="line-number">168</span><br><span class="line-number">169</span><br><span class="line-number">170</span><br><span class="line-number">171</span><br><span class="line-number">172</span><br><span class="line-number">173</span><br><span class="line-number">174</span><br><span class="line-number">175</span><br><span class="line-number">176</span><br><span class="line-number">177</span><br><span class="line-number">178</span><br><span class="line-number">179</span><br><span class="line-number">180</span><br><span class="line-number">181</span><br><span class="line-number">182</span><br><span class="line-number">183</span><br><span class="line-number">184</span><br><span class="line-number">185</span><br><span class="line-number">186</span><br><span class="line-number">187</span><br><span class="line-number">188</span><br><span class="line-number">189</span><br><span class="line-number">190</span><br><span class="line-number">191</span><br><span class="line-number">192</span><br><span class="line-number">193</span><br><span class="line-number">194</span><br><span class="line-number">195</span><br><span class="line-number">196</span><br><span class="line-number">197</span><br><span class="line-number">198</span><br><span class="line-number">199</span><br><span class="line-number">200</span><br><span class="line-number">201</span><br><span class="line-number">202</span><br><span class="line-number">203</span><br><span class="line-number">204</span><br><span class="line-number">205</span><br><span class="line-number">206</span><br><span class="line-number">207</span><br><span class="line-number">208</span><br><span class="line-number">209</span><br><span class="line-number">210</span><br><span class="line-number">211</span><br><span class="line-number">212</span><br><span class="line-number">213</span><br><span class="line-number">214</span><br><span class="line-number">215</span><br><span class="line-number">216</span><br><span class="line-number">217</span><br><span class="line-number">218</span><br><span class="line-number">219</span><br><span class="line-number">220</span><br><span class="line-number">221</span><br><span class="line-number">222</span><br><span class="line-number">223</span><br><span class="line-number">224</span><br><span class="line-number">225</span><br><span class="line-number">226</span><br><span class="line-number">227</span><br><span class="line-number">228</span><br><span class="line-number">229</span><br><span class="line-number">230</span><br><span class="line-number">231</span><br><span class="line-number">232</span><br><span class="line-number">233</span><br><span class="line-number">234</span><br><span class="line-number">235</span><br><span class="line-number">236</span><br><span class="line-number">237</span><br><span class="line-number">238</span><br><span class="line-number">239</span><br><span class="line-number">240</span><br><span class="line-number">241</span><br><span class="line-number">242</span><br><span class="line-number">243</span><br><span class="line-number">244</span><br><span class="line-number">245</span><br><span class="line-number">246</span><br><span class="line-number">247</span><br><span class="line-number">248</span><br><span class="line-number">249</span><br><span class="line-number">250</span><br><span class="line-number">251</span><br><span class="line-number">252</span><br><span class="line-number">253</span><br><span class="line-number">254</span><br><span class="line-number">255</span><br><span class="line-number">256</span><br><span class="line-number">257</span><br><span class="line-number">258</span><br><span class="line-number">259</span><br><span class="line-number">260</span><br><span class="line-number">261</span><br><span class="line-number">262</span><br><span class="line-number">263</span><br><span class="line-number">264</span><br><span class="line-number">265</span><br><span class="line-number">266</span><br><span class="line-number">267</span><br><span class="line-number">268</span><br><span class="line-number">269</span><br><span class="line-number">270</span><br><span class="line-number">271</span><br><span class="line-number">272</span><br><span class="line-number">273</span><br><span class="line-number">274</span><br><span class="line-number">275</span><br><span class="line-number">276</span><br><span class="line-number">277</span><br><span class="line-number">278</span><br><span class="line-number">279</span><br><span class="line-number">280</span><br><span class="line-number">281</span><br><span class="line-number">282</span><br><span class="line-number">283</span><br><span class="line-number">284</span><br><span class="line-number">285</span><br><span class="line-number">286</span><br><span class="line-number">287</span><br><span class="line-number">288</span><br><span class="line-number">289</span><br><span class="line-number">290</span><br><span class="line-number">291</span><br><span class="line-number">292</span><br><span class="line-number">293</span><br><span class="line-number">294</span><br><span class="line-number">295</span><br><span class="line-number">296</span><br><span class="line-number">297</span><br><span class="line-number">298</span><br><span class="line-number">299</span><br><span class="line-number">300</span><br><span class="line-number">301</span><br><span class="line-number">302</span><br><span class="line-number">303</span><br></div></div><h3 id="npm-link"><a class="header-anchor" href="#npm-link" aria-hidden="true">#</a> npm link</h3><p>node 应用开发中，我们不可避免的需要使用或拆分为 npm 模块，经常遇到的一个问题是：</p><blockquote><p>新开发或修改的 npm 模块，如何在项目中试验？</p></blockquote><p>但其实 npm 本身已经对此类情况提供了专门的 <code>npm link</code> 指令。</p><p>相关文档： <a href="https://yq.aliyun.com/go/articleRenderRedirect?url=https%3A%2F%2Flink.juejin.im%2F%3Ftarget%3Dhttps%3A%2F%2Fdocs.npmjs.com%2Fcli%2Flink" target="_blank" rel="noopener noreferrer">docs.npmjs.com/cli/link</a></p><div class="language-none line-numbers-mode"><pre><code>$ cd path/to/my-project
+$ npm link path/to/my-utils
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989446-72092">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="$ cd path/to/my-project
+$ npm link path/to/my-utils
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989446-72092" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br></div></div><p>简单的替换一个单词，就搞定了，cool~</p><p>如果这两种的目录不在一起，那还有一种方法：</p><div class="language-none line-numbers-mode"><pre><code>$ # 先去到模块目录，把它 link 到全局
+$ cd path/to/my-utils
+$ npm link
+$
+$ # 再去项目目录通过包名来 link
+$ cd path/to/my-project
+$ npm link my-utils
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989446-23660">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="$ # 先去到模块目录，把它 link 到全局
+$ cd path/to/my-utils
+$ npm link
+$
+$ # 再去项目目录通过包名来 link
+$ cd path/to/my-project
+$ npm link my-utils
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989446-23660" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br><span class="line-number">5</span><br><span class="line-number">6</span><br><span class="line-number">7</span><br></div></div><p>该指令还可以用来调试 node cli 模块，譬如需要本地调试我们的 egg-init，可以这样：</p><div class="language-none line-numbers-mode"><pre><code>$ cd path/to/egg-init
+$ npm link
+$ # 此时全局的 egg-init 指令就已经指向你的本地开发目录了
+$ egg-init # 即可
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989446-36031">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="$ cd path/to/egg-init
+$ npm link
+$ # 此时全局的 egg-init 指令就已经指向你的本地开发目录了
+$ egg-init # 即可
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989446-36031" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br><span class="line-number">2</span><br><span class="line-number">3</span><br><span class="line-number">4</span><br></div></div><p>想去掉 link 也很简单：</p><div class="language-none line-numbers-mode"><pre><code>npm unlink my-utils
+</code><div class="m-mdic-copy-wrapper"><div class="u-mdic-copy-notify" id="j-notify-1629556989446-96034">复制成功</div><button class="u-mdic-copy-btn j-mdic-copy-btn" data-mdic-content="npm unlink my-utils
+" data-mdic-attach-content="copyright | [artiely]" data-mdic-notify-id="j-notify-1629556989446-96034" data-mdic-notify-delay="1000" data-mdic-copy-fail-text="copy fail" onclick="!function(t){const e={copy:(t=&#39;&#39;,e=&#39;&#39;)=&gt;new Promise((c,o)=&gt;{const n=document.createElement(&#39;textarea&#39;),d=e?`\n\n${e}`:e;n.value=`${t}${d}`,document.body.appendChild(n),n.select();try{const t=document.execCommand(&#39;copy&#39;);document.body.removeChild(n),t?c():o()}catch(t){document.body.removeChild(n),o()}}),btnClick(t){const c=t&amp;&amp;t.dataset?t.dataset:{},o=c.mdicNotifyId,n=document.getElementById(o),d=c.mdicNotifyDelay,i=c.mdicCopyFailText;e.copy(c.mdicContent,c.mdicAttachContent).then(()=&gt;{n.style.display=&#39;block&#39;,setTimeout(()=&gt;{n.style.display=&#39;none&#39;},d)}).catch(()=&gt;{alert(i)})}};e.btnClick(t)}(this);">复制</button></div></pre><div class="line-numbers-wrapper"><span class="line-number">1</span><br></div></div><h3 id="egg-scripts流程"><a class="header-anchor" href="#egg-scripts流程" aria-hidden="true">#</a> Egg-Scripts流程</h3><p><img src="https://gitee.com/artiely/Figure-bed/raw/master/images/20200314162006.png" alt="image-20191027192550338"></p><h3 id="egg-cluster"><a class="header-anchor" href="#egg-cluster" aria-hidden="true">#</a> egg-cluster</h3></div></div></div><div class="footer"><div class="follow"><a href="https://github.com/artiely" target="_target" title="github"><i class="icon iconfont"></i></a><a href="https://gitee.com/artiely" target="_target" title="gitee"><i class="icon iconfont"></i></a><a href="https://www.npmjs.com/~artiely" target="_target" title="npm"><i class="icon iconfont"></i></a><a href="mailto:artiely1024@gmail.com" title="gmail"><i class="icon iconfont"></i></a><a href="https://www.youtube.com/channel/UC3U9zfLMepBqyQjlvEVhQDQ?view_as=subscriber" target="_target" title="youtube"><i class="icon iconfont"></i></a><a href="https://www.zhihu.com/people/artiely-19" target="_target" title="zhihu"><i class="icon iconfont"></i></a><a href="https://space.bilibili.com/31432769?spm_id_from=333.33.b_73656375726974794f75744c696e6b.1" target="_target" title="bilibili"><i class="icon iconfont"></i></a></div><p class="footer-copyright"> ©Artiely <span class="time">-2019-2021</span></p></div><!--]--></div>
+    <script>__VP_HASH_MAP__ = JSON.parse("{\"index.md\":\"1dd82a23\",\"about_index.md\":\"8cacf850\",\"code_index.md\":\"bc9afb37\",\"comment_index.md\":\"305643b2\",\"tags_index.md\":\"b394f281\",\"timeline_index.md\":\"64c3604b\",\"post_2017_2017-6-10-tcp.md\":\"4bff6220\",\"post_2017_2017-6-6-css-1px.md\":\"8b792530\",\"post_2017_2017-6-6-css-ios-android.md\":\"34b21ff6\",\"post_2017_2017-6-6-css-sticky-footer.md\":\"bdbb7d21\",\"post_2017_2017-6-6-git.md\":\"ce988f32\",\"post_2017_2017-6-7-css-mobile-scroll-through.md\":\"24eda4a4\",\"post_2017_2017-6-8-yahoo-rules14.md\":\"d04ad885\",\"post_2017_2017-6-9-form-default-submit.md\":\"c81e706c\",\"post_2017_2017-7-4-moment.md\":\"7ac67b06\",\"post_2017_2017-7-7-css-rules.md\":\"3eaaa51d\",\"post_2017_2017-7-7-js-rules.md\":\"295f14fe\",\"post_2017_2017-7-7-rules-file.md\":\"3059937d\",\"post_2017_2017-7-7-rules-html.md\":\"81d1f61b\",\"post_2018_2018-1-30-centos-setup-nodejs.md\":\"21e1e8d2\",\"post_2018_2018-10-10-axios.md\":\"f0be1150\",\"post_2018_2018-10-10-chrome-dev-tips.md\":\"6fa08b9c\",\"post_2018_2018-10-10-get-post.md\":\"29221919\",\"post_2018_2018-10-10-git-green-pointer.md\":\"3ccf6966\",\"post_2018_2018-10-10-js-bit-operation.md\":\"1c33ecb0\",\"post_2018_2018-10-10-npm-nrm.md\":\"e96c01f5\",\"post_2018_2018-10-10-pm2.md\":\"4acd4997\",\"post_2018_2018-10-10-vue-pracel.md\":\"88950f83\",\"post_2018_2018-10-7-node-spider.md\":\"bef70d64\",\"post_2018_2018-3-12-nodejs-npm.md\":\"fde5fdb4\",\"post_2018_2018-6-26-web-koa-egg.md\":\"cb1f0540\",\"post_2018_2018-6-9-nuxt.md\":\"1d060bc9\",\"post_2018_2018-7-10-electron-message.md\":\"7eed85c9\",\"post_2018_2018-7-10-websocket.md\":\"59c778c1\",\"post_2018_2018-7-11-electron-nedb.md\":\"3b6797a4\",\"post_2018_2018-7-11-electron-shortcut-cliboard-nativeimage.md\":\"5ee44930\",\"post_2018_2018-7-3-electron-init.md\":\"8b66007e\",\"post_2018_2018-7-4-electron-base.md\":\"3c793fd1\",\"post_2018_2018-7-5-electron-model.md\":\"6e6cf702\",\"post_2018_2018-7-6-electron-menu-shortcut.md\":\"a62700a1\",\"post_2018_2018-7-7-electron-main-render.md\":\"d352cedc\",\"post_2018_2018-7-8-electron-dialog.md\":\"fc50cba3\",\"post_2018_2018-7-8-electron-shell-url-webview.md\":\"a87fc727\",\"post_2018_2018-7-9-electron-ico.md\":\"c39bd6aa\",\"post_2018_2018-8-7-egg-start.md\":\"e7e79807\",\"post_2018_2018-8-8-question.md\":\"797ebe6c\",\"post_2018_2018-8-8-vue-rules.md\":\"a5746d17\",\"post_2018_2018-9-7-js.md\":\"9a4e4d4e\",\"post_2019_2019-10-27-node-pm2.md\":\"8f2313d5\",\"post_2019_2019-10-3-alinode.md\":\"9554b8d8\",\"post_2019_2019-11-16-nodejs-api.md\":\"b944daff\",\"post_2019_2019-4-15-nodejs-tcp-udp-h2.md\":\"13c8f913\",\"post_2019_2019-4-16-vue-cli3+to-plugin.md\":\"cebf025d\",\"post_2019_2019-4-3-sentry-sourcemap.md\":\"acc86577\",\"post_2019_2019-4-3-vuepress-theme.md\":\"e82d2094\",\"post_2019_2019-5-5-restful-graphql.md\":\"2549d917\",\"post_2019_2019-6-1-linux.md\":\"0441d4f2\",\"post_2019_2019-6-12-deploy.md\":\"ef098d91\",\"post_2019_2019-6-19-fontend-performance-optimization.md\":\"e9fccd4a\",\"post_2019_2019-6-27-eslint-test.md\":\"bd81c131\",\"post_2019_2019-6-4-docker.md\":\"a2cdc2e6\",\"post_2019_2019-6-4-nodejs-events.md\":\"2de88a80\",\"post_2019_2019-6-6-css-fixedleft-autoright.md\":\"6962b704\",\"post_2019_2019-6-6-vue-observable.md\":\"f8055807\",\"post_2019_2019-7-13-automated-testing.md\":\"dc7fff88\",\"post_2019_2019-7-6-android-studio-flutter-shortcut.md\":\"17f60f4f\",\"post_2019_2019-7-6-dart-flutter-conf.md\":\"3230a015\",\"post_2019_2019-8-14-nosql.md\":\"1cf5fd04\",\"post_2021_2021-1-3-puppeteer.md\":\"4c94f00f\",\"post_2021_2021-2-23-proxy.md\":\"7c36be8c\",\"post_2021_2021-3-18-appleid.md\":\"8ddc761d\",\"post_2021_2021-6-15-mini.md\":\"05666a55\",\"post_2021_2021-7-23-pixijs.md\":\"b95d0749\",\"post_2021_2021-8-15-resize-observer.md\":\"4ba0de13\",\"post_2021_2021-8-16-min-share.md\":\"013ca983\",\"post_2020_2020-12-31-css.md\":\"722b6fa6\",\"post_2020_2020-3-16-chrome-plugin.md\":\"6501a2b9\",\"post_2020_2020-3-16-vscode-plugin.md\":\"961b1b51\",\"post_2020_2020-3-16-windows-plugin.md\":\"1f353ace\",\"post_2020_2020-3-18-electron-mirror-down.md\":\"ab5d3d5c\",\"post_2020_2020-3-18-electron-updater.md\":\"c7688116\",\"post_2020_2020-3-19-timer.js.md\":\"14c8b7c6\",\"post_2020_2020-3-20-antd-vue-pro.md\":\"9a2580c6\",\"post_2020_2020-3-20-js-how-to-work.md\":\"e38478bf\",\"post_2020_2020-3-29-vuepress-plugin.md\":\"91c1a89b\",\"post_2020_2020-3-31-shituzhengmei.md\":\"11b00859\",\"post_2020_2020-4-1-plupload.md\":\"587d84f1\",\"post_2020_2020-4-2-cmder.md\":\"2e104658\",\"post_2020_2020-4-29-vue-hook-lifecycle.md\":\"a0a9aafe\",\"post_2020_2020-4-4-yiqin.md\":\"1dcf7488\",\"post_2020_2020-4-6-plop.md\":\"d5e34049\",\"post_2020_2020-5-22-ali-oss.md\":\"51cb76e6\",\"post_2020_2020-5-29-axios.md\":\"ea12ce2a\",\"post_2020_2020-6-12-icon.md\":\"05971bed\",\"post_2020_2020-6-20-limit-chars.md\":\"5e0c91e8\",\"post_2020_2020-6-23-charslimit.md\":\"8ba59092\",\"post_2020_2020-6-25-custom-event.md\":\"4f21e6c9\",\"post_2020_2020-6-25-photo.md\":\"860d4695\",\"post_2020_2020-6-29-component.md\":\"6a33d1fd\",\"post_2020_2020-6-5-01-vue-cli.md\":\"6de83173\",\"post_2020_2020-6-5-02-vue-dir.md\":\"60fc7303\",\"post_2020_2020-6-5-03-vue-config.md\":\"a4de14f5\",\"post_2020_2020-6-5-04-vue.webpack.md\":\"73a7bdeb\",\"post_2020_2020-6-5-05-env-mode.md\":\"0ad8955b\",\"post_2020_2020-6-5-06-local-preview.md\":\"1fdf61de\",\"post_2020_2020-6-9-01-plugin.md\":\"d86d3952\",\"post_2020_2020-7-1-vue-api.md\":\"d61e9535\",\"post_2020_2020-7-1-vuex-api.md\":\"e27fd0d6\",\"post_2020_2020-7-13-madel.md\":\"aa2808a9\",\"post_2020_2020-7-14-share.md\":\"9b4315d6\",\"post_2020_2020-7-21-taro.md\":\"48553bac\",\"post_2020_2020-7-23-temp.md\":\"02e1964d\",\"post_2020_2020-7-9-thks-js.md\":\"72987a61\",\"post_2020_2020-8-17.md\":\"b5f0f831\",\"post_2020_2020-8-27-frontend-css1.md\":\"e9fa7268\",\"post_2020_2020-8-28-frontend-css2.md\":\"891ecf04\",\"post_2020_2020-8-29-frontend-js1.md\":\"23f7ba39\",\"post_2020_2020-8-29-frontend-js2.md\":\"25adeb71\",\"post_2020_2020-8-29-frontend-js3.md\":\"a44e3c94\",\"post_2020_2020-8-30-frontend-brower1.md\":\"dc1f1b98\",\"post_2020_2020-8-30-frontend-brower2.md\":\"0705e6f3\",\"post_2020_2020-8-31-frontend-brower3.md\":\"a019d3cc\",\"post_2020_2020-8-31-frontend-brower4.md\":\"88ef8b8e\",\"post_2020_2020-9-1-fw.md\":\"78bcad63\",\"post_2020_2020-9-1-fw2.md\":\"aff579a3\",\"post_2020_2020-9-15-js-arr.md\":\"9f45a83c\",\"post_2020_2020-9-2-proxy.md\":\"76b3628d\",\"post_2020_2020-9-24-interview.md\":\"8129eb80\",\"post_2020_2020-9-3-brower.md\":\"5f258a3a\",\"post_2020_2020-9-5-what-happens.md\":\"f5479f80\",\"post_2020_2020-9-7-recursive.md\":\"94dd0c9a\"}")</script>
+    <script type="module" async src="/assets/app.5f3fb606.js"></script>
+  </body>
+</html>

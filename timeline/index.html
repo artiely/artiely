@@ -1,0 +1,1185 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width,initial-scale=1">
+    <title>Artiely' blog</title>
+    <meta name="description" content="随便玩玩">
+    <link rel="stylesheet" href="/assets/style.514056dd.css">
+    <link rel="modulepreload" href="/assets/Home.e48ff0e9.js">
+    <link rel="modulepreload" href="/assets/lottie.42100ed3.js">
+    <link rel="modulepreload" href="/assets/lightgallery.es5.f43f3494.js">
+    <link rel="modulepreload" href="/assets/TextPlugin.8595634c.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="modulepreload" href="/assets/ScrollTrigger.f95eeefc.js">
+    <link rel="modulepreload" href="/assets/timeline_index.md.64c3604b.lean.js">
+    <link rel="modulepreload" href="/assets/app.5f3fb606.js">
+    <link rel="stylesheet" href="//at.alicdn.com/t/font_2707633_ayah6j2r7wi.css">
+    <script type="text/javascript" src="/js/twikoo.js"></script>
+    <meta name="twitter:title" content="Artiely&#39; blog">
+    <meta property="og:title" content="Artiely&#39; blog">
+  </head>
+  <body>
+    <div id="app"><!--[--><!----><!----><div class="content dark" style="height:100%;"><div style="position:relative;"><div><div style="margin-top:100px;" class="timeline" data-v-5414fc5c><!-- <Clock /> --><ul class="el-timeline" data-v-5414fc5c><!--[--><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafafa;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-08-16</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-8-16-min-share" data-v-5414fc5c>小程序分享</a><p data-v-5414fc5c>
+小程序分享
+
+/**
+ 分享包装
+ useHandleShare(params,callback)
+ params={
+ title:string
+ imageUrl:string
+ path:string
+ cb:fn
+ query:{} 参数
+ }
+ */
+import {urlStringify} from &#39;@/libs/t ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafafa;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-08-15</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-8-15-resize-observer" data-v-5414fc5c>ResizeObserver</a><p data-v-5414fc5c>
+一个思考，利用 ResizeObserver 实现响应式
+
+let a = document.getElementById(&quot;a&quot;);
+
+let obverser = new ResizeObserver((entries) =&gt; {
+  for (let entry of entries) {
+    console.log(entry.contentRect.width) ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafafa;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-07-23</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-7-23-pixijs" data-v-5414fc5c>pixijs</a><p data-v-5414fc5c>
+pixi.js
+
+安装
+
+yarn add pixi.js
+
+起步
+
+import * as PIXI from &quot;pixi.js&quot;;
+// 初始化
+let app = new PIXI.Application({
+  width: 256,
+  height: 256, ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#22b443;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-06-15</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-6-15-mini" data-v-5414fc5c>小程序二进制转字符串</a><p data-v-5414fc5c>
+小程序二进制转字符串
+
+function Uint8ArrayToString(buf) {
+  var encodedString = String.fromCharCode.apply(null, new Uint8Array(buf));
+  encodedString = decodeURIComponent(escape(encodedString));
+  retu ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#a19caf;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-03-18</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-3-18-appleId" data-v-5414fc5c>如何创建自己的美区苹果账号</a><p data-v-5414fc5c>
+为什么需要创建自己的美区苹果账号？
+目前所有的VPN应用，部分RSS订阅软件，部分新闻app以及部分游戏app都无法在中国区下载，如果工作生活需要这些，建议自行创建一个美区账号。
+
+如何创建？
+1.使用网页浏览器创建新的Apple ID
+点击Apple ID创建链接 https://appleid.apple.com/account#!&amp;page=create （注意不要使用vp ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f0df3d;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-02-23</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-2-23-proxy" data-v-5414fc5c>从使用场景了解proxy</a><p data-v-5414fc5c>
+从使用场景了解 proxy
+
+前面讲过一篇proxy 的深入理解，现在就带大家了解一下proxy的实际应用，更深入的了解proxy的妙用及价值吧！ 呼应上了~
+
+由俭入奢
+
+跟踪属性访问（get，set）
+
+假设我们有一个函数tracePropAccess(obj, propKeys)，该函数 obj 在 pro ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#00cab4;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2021-01-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2021/2021-1-3-puppeteer" data-v-5414fc5c>从使用场景了解puppeteer</a><p data-v-5414fc5c>
+Puppeteer 是什么
+
+英 [ˌpʌpɪˈtɪər]
+美 [ˌpʌpɪˈtɪr]
+
+n. 操纵木偶的人；操纵傀儡
+vt. 操纵
+
+浏览器自动化库
+Puppeteer = Node.js + Chrome
+评估 Javascript
+
+&lt;!--
+Puppeteer 是 Node.js 工具引擎
+Puppeteer 提供了一系列 API，通过 Chrome Dev ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#639ecd;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-12-31</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-12-31-css" data-v-5414fc5c>css</a><p data-v-5414fc5c>
+css
+
+&lt;p class=&quot;codepen&quot; data-height=&quot;265&quot; data-theme-id=&quot;dark&quot; data-default-tab=&quot;css,result&quot; data-user=&quot;artiely&quot; data-slug-hash=&quot;yLavyBZ&quot; style=&quot;height: 265px; box-sizing: border-box; dis ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#3f5d5e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-24</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-24-interview" data-v-5414fc5c>面试问题总结</a><p data-v-5414fc5c>
+面试问题总结
+
+最近参加了一些面试，凭借着自己的记忆把还记得住的问题做一个归纳总结和个人观点。暂时不写答案，大家可以自己答一答，再找我要答案。
+
+笔试和问答
+
+// 说出一下代码执行结果，为什么？
+console.log(&#39;script start&#39;);
+setTimeout(function(){
+  console.log(&#39;settimeout&#39;)
+} ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1b1b20;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-15</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-15-js-arr" data-v-5414fc5c>手写 map 和 reduce</a><p data-v-5414fc5c>
+手写 map 和 reduce
+
+;(function() {
+  var selfMap = function(fn, context) {
+    // fn: 回调  context:回调作用域指定的this
+    // 1. 获取调用者this,并转为数组
+    var arr = [].slice.call(this)
+    // 2. 遍历调用者
+    va ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1b1b20;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-7-recursive" data-v-5414fc5c>说一说递归如何优化-尾递归优化</a><p data-v-5414fc5c>
+说一说递归如何优化-尾递归优化
+
+&gt; 本文旨在帮助大家掌握递归的性能优化方案——尾递归优化，以及如何对下列函数用尾递归进行优化？
+
+参考摘录：阮一峰-尾调用优化
+
+一、什么尾调用？
+
+尾调用的概念非常简单，一句话就能说 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f2f2f2;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-05</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-5-what-happens" data-v-5414fc5c>当···时发生了什么</a><p data-v-5414fc5c>
+当···时发生了什么？
+
+这个试图回答一个古老的面试问题：当你在浏览器中输入 google.com 并且按下回车之后发生了什么？
+
+不过我们不再局限于平常的回答，而是想办法回答地尽可能具体，不遗漏任何细节。
+
+这将是一个协作的过程，所以深入挖掘吧，并且帮助我们一起完善它。仍然有大量的细节等待着你来添加，欢迎向我们发送 Pull Requset！
+
+按 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#0a1a4a;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-3-brower" data-v-5414fc5c>前端并发性能优化</a><p data-v-5414fc5c>前端技术的逐渐成熟，还衍生了domain hash, cookie free, css sprites, js/css combine, max expires time, loading images on demand等等技术。这些技术的出现和大量使用都和并发资源数有关。
+cookie free
+按照普通设计，当网站cookie信息有1 KB、网站首页共150个资源时，用户在请求 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#eb7426;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-02</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-2-proxy" data-v-5414fc5c>深入理解Proxy</a><p data-v-5414fc5c>
+深入理解Proxy
+
+什么是Proxy？它的作用是？
+MDN
+
+据阮一峰文章介绍：Proxy可以理解成，在目标对象之前架设一层 &quot;拦截&quot;，当外界对该对象访问的时候，都必须经过这层拦截，而Proxy就充当了 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#3fb782;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-09-01</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-1-fw" data-v-5414fc5c>前端面试题汇总-框架-1</a><p data-v-5414fc5c>
+前端面试题汇总-框架-1
+
+1.vue优点？
+答：轻量级框架：只关注视图层，是一个构建数据的视图集合，大小只有几十kb；
+简单易学：国人开发，中文文档，不存在语言障碍 ，易于理解和学习；
+双向数据绑定：保留了angular的特点，在数据操作方面更为简单；
+组件化：保留了react的优点，实现了html的封装和重用，在构建单页面应用方面有着独特的优势；
+视图，数据，结构分离：使数据的更 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-9-1-fw2" data-v-5414fc5c>前端面试题汇总-框架-2</a><p data-v-5414fc5c>
+前端面试题汇总-框架-2
+
+生命周期函数面试题
+1.什么是 vue 生命周期？有什么作用？
+答：每个 Vue 实例在被创建时都要经过一系列的初始化过程——例如，需要设置数据监听、编译模板、将实例挂载到 DOM 并在数据变化时更新 DOM 等。同时在这个过程中也会运行一些叫做 生命周期钩子 的函数，这给了用户在不同阶段添加自己的代码的机会。（ps：生命周期钩子就是生命周期函数）例 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2b4dd7;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-31</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-31-frontend-brower3" data-v-5414fc5c>前端面试题汇总-浏览器篇-3</a><p data-v-5414fc5c>
+前端面试题汇总-浏览器篇-3
+搞懂前端缓存
+
+ 总的来说：
+
+如果开启了Service Worker首先会从Service Worker中拿
+如果新开一个以前打开过的页面缓存会从Disk Cache(磁盘缓存)中拿（前提是命中强缓存）
+刷新当前页面时浏览器会根据当前运行环境内存来决定是从 Memory Cache(内存缓存) 还是 从Disk Cache中拿(可以看到 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-31-frontend-brower4" data-v-5414fc5c>前端面试题汇总-浏览器篇-4</a><p data-v-5414fc5c>
+前端面试题汇总-浏览器篇-4
+
+前端与数据埋点
+
+所谓埋点就是在应用中特定的流程收集一些信息，用来跟踪应用使用的状况，后续用来进一步优化产品或是提供运营的数据支撑，包括访问数（Visits），访客数（Visitor），停留时长（Time On Site），页面浏览数（Page Views）和跳出率（Bounce Rate）。这样的信息收集可以大致分为两种：页面统计（track th ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2b4dd7;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-30</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-30-frontend-brower1" data-v-5414fc5c>前端面试题汇总-浏览器篇-1</a><p data-v-5414fc5c>
+前端面试题汇总-浏览器篇-1
+
+1. 浏览器渲染机制
+
+浏览器采用流式布局模型（Flow Based Layout）
+浏览器会把HTML解析成DOM，把CSS解析成CSSOM，DOM和CSSOM合并就产生了渲染树（Render Tree）。
+有了RenderTree，我们就知道了所有节点的样式，然后计算他们在页面上的大小和位置，最后把节 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-30-frontend-brower2" data-v-5414fc5c>前端面试题汇总-浏览器篇-2</a><p data-v-5414fc5c>
+前端面试题汇总-浏览器篇-2
+Token - 服务端身份验证的流行方案
+
+简述：
+
+需要一个secret（随机数）
+后端利用secret和加密算法(如：HMAC-SHA256)对payload(如账号密码)生成一个字符串(token)，返回前端
+前端每次request在header中带上token
+后端用同样的算法解密
+
+身份认证
+
+服务 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#141414;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-29</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-29-frontend-js1" data-v-5414fc5c>前端面试题汇总-js-1</a><p data-v-5414fc5c>
+前端面试题汇总-js-1
+
+[&#39;1&#39;, &#39;2&#39;, &#39;3&#39;].map(parseInt)
+
+what &amp; why ?
+
+早在 2013年, 有人在微博上发布了以下代码段:
+
+[&#39;10&#39;,&#39;10&#39;,&#39;10&#39;,&#39;10&#39;,&#39;10&#39;].map(parseInt);
+// [10, NaN, 2, 3, 4]
+
+parseInt
+
+parseInt() 函数解析 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-29-frontend-js2" data-v-5414fc5c>前端面试题汇总-js-2</a><p data-v-5414fc5c>
+前端面试题汇总-js-2
+
+有以下 3 个判断数组的方法，请分别介绍它们之间的区别和优劣
+
+1. Object.prototype.toString.call()
+
+每一个继承 Object 的对象都有 toString 方法，如果 toString 方法没有重写的话，会返回 [Object type]，其中 type 为对象的类型。但当除了 Object 类型的对 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-29-frontend-js3" data-v-5414fc5c>前端面试题汇总-js-3</a><p data-v-5414fc5c>
+前端面试题汇总-js-3
+
+XSS
+
+XSS是什么
+
+XSS是一种经常出现在web应用中的计算机安全漏洞，它允许恶意web用户将代码植入到提供给其它用户使用的页面中。
+
+比如这些代码包括HTML代码和客户端脚本。攻击者利用XSS漏洞旁路掉访问控制——例如同源策略(same origin policy)。
+
+这种类型的漏洞由于被黑客用来编写危害性更大的网络钓鱼(Phishing) ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafa00;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-28</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-28-frontend-css2" data-v-5414fc5c>前端面试题汇总-css-2</a><p data-v-5414fc5c>
+前端面试题汇总-css-2
+
+7 种方法解决移动端 Retina 屏幕 1px 边框问题
+
+造成边框变粗的原因
+
+其实这个原因很简单，因为css中的1px并不等于移动设备的1px，这些由于不同的手机有不同的像素密度。在window对象中有一个devicePixelRatio属性，他可以反应css中的像素与设备的像素比。
+
+&gt; devicePixelRatio的官方的定义为：设备 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafa00;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-27</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-27-frontend-css1" data-v-5414fc5c>前端面试题汇总-css-1</a><p data-v-5414fc5c>
+前端面试题汇总-css-1
+
+BFC、IFC、GFC、FFC
+
+CSS2.1中只有BFC和IFC, CSS3中才有GFC和FFC。
+
+到底什么是BFC、IFC、GFC和FFC
+
+What&#39;s FC？
+
+一定不是KFC，FC的全称是：Formatting Contexts，是W3C CSS2.1规范中的一个概念。它是页面中的一块渲染区域，并且有一套渲染规则，它决定了其子元素将如 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2884fc;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-08-17</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-8-17" data-v-5414fc5c>前端性能优化</a><p data-v-5414fc5c>
+前端性能优化
+关于 性能优化 是个大的面，这篇文章主要涉及到 前端 的几个点，如 前端性能优化 的流程、常见技术手段、工具等。
+
+尽量减少 HTTP 请求个数——须权衡
+使用 CDN（内容分发网络）
+为文件头指定 Expires 或 Cache-Control ，使内容具有缓存性。
+避免空的 src 和 href
+使用 gzip 压缩内容
+把 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#262626;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-23</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-23-temp" data-v-5414fc5c>创建模板脚手架</a><p data-v-5414fc5c>
+前置知识点
+commander
+commander
+这是用来编写指令和处理命令行的，具体用法如下：
+const program = require(&quot;commander&quot;);
+// 定义指令
+program
+ .version(&#39;0.0.1&#39;)
+ .command(&#39;init&#39;, &#39;Genera ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1628d2;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-21</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-21-taro" data-v-5414fc5c>taro 踩坑初体验</a><p data-v-5414fc5c>
+taro 踩坑初体验
+
+因为接到多端的小程序需求并且工期端，之前一直在关注taro，今天就来先入个门实践一下，希望可以站着走出来
+官方文档
+安装
+
+按照文档走流程没遇到啥问题，不赘述
+
+百度小程序工具下载
+[下载地址](https://smartprogram.baidu ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#606a7b;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-14</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-14-share" data-v-5414fc5c>无邀请码分享相关产品</a><p data-v-5414fc5c>
+实现无邀请码分享App的相关产品
+openinstall
+
+shareinstall
+
+sharetrace
+
+[极光魔链](http://docs.jiguang.cn/jmlink/advanced/no ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f1da4e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-13</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-13-madel" data-v-5414fc5c>可控模态框的实现</a><p data-v-5414fc5c>
+可控模态框的实现
+
+v-model 语法糖的实现
+.sync 修饰符的使用
+滚动穿透的解决
+slot 和 slot-scoped 的运用
+优化滚动条的处理
+动态添加到指定节点的实现
+快捷键的扩展应用[esc,enter]
+动画
+拖拽
+jsApi
+扩展成提示框
+扩展成询问框
+扩展成抽屉
+书写文档
+
+借助 vue-cli 快速开始原 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f1da4e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-09</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-9-thks-js" data-v-5414fc5c>着迷的JavaScript</a><p data-v-5414fc5c>
+哈哈哈。。。
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f9f9f9;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-07-01</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-1-vue-api" data-v-5414fc5c>vue 完整api备忘清单</a><p data-v-5414fc5c>
+vue 完整api备忘清单
+
+![](https://gitee.com/ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-7-1-vuex-api" data-v-5414fc5c>vuex 完整api备忘清单</a><p data-v-5414fc5c>
+vuex 完整api备忘清单
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#3a966a;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-29</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-29-component" data-v-5414fc5c>vue 组件模式</a><p data-v-5414fc5c>
+
+&lt;!-- 组件通讯
+
+普通组件
+函数式组件
+高阶组件
+无渲染组件
+
+逻辑复用也可以通过诸如 mixins、高阶组件或是 (通过作用域插槽实现的) 无渲染组件的模式
+
+扩展指令
+埋点的封装
+
+组件封装应该考虑什么
+BEM
+
+高阶组件作为一个函数，它可以更加纯粹地关注业务逻辑层面的代码，比如数据处理，数据校验，发送请求等，可以改善目前代码里业务逻辑和UI逻辑混杂在一起的现 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#e7eb91;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-25</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-25-custom-event" data-v-5414fc5c>创建自定义事件</a><p data-v-5414fc5c>
+创建自定义事件
+
+可以使用Event构造函数创建事件，如下所示：
+var event = new Event(&#39;build&#39;);
+
+// Listen for the event.
+elem.addEventListener(&#39;build&#39;, function (e) { /* ... */ }, false);
+
+// Dispatch the event.
+elem.di ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-25-photo" data-v-5414fc5c>摄影图片欣赏</a><p data-v-5414fc5c>
+摄影图片欣赏
+
+![](https://gitee.com/artiel ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#68a863;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-23</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-23-charslimit" data-v-5414fc5c>指令限制字符的长度</a><p data-v-5414fc5c>
+指令限制字符的长度
+
+show code
+// 计算当前输入的字节
+export function strlen(str) {
+  var len = 0
+  for (var i = 0; i = 0x0001 &amp;&amp; c &lt;= ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#68a863;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-20</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-20-limit-chars" data-v-5414fc5c>限制字符的长度</a><p data-v-5414fc5c>
+限制字符的长度
+
+需求
+
+一个字母和数字算作一个字符，一个汉字算作两个字符
+如：一个输入框可输入 30 个字符,同时展示剩余可输入字符
+用例 1：可输入 30 个字母或数字
+用例 2：只可输入 15 个汉字
+
+开始
+
+const charCodeDir = (c) =&gt; {
+  return (c &gt;= 0x0001 &amp;&amp; c &lt;= 0x007e) || (c &lt;= ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#4f8829;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-12</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-12-icon" data-v-5414fc5c>vue管理系统从0到1-icon组件</a><p data-v-5414fc5c>
+vue管理系统从0到1-icon组件
+
+什么是iconfont
+&gt; iconfont ，图标字体，也叫字体图标，顾名思义，就是字体做的图标。受到近些年 扁平化设计 的影响，越来越多的图标都开始使用 iconfont
+
+特色
+自由的变化大小，且不会模糊
+比图片小，加载快
+可以任意改变颜色
+支持单色和多色
+好管理维护
+准备
+https://www.iconfo ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#5.06e+30;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-09</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-9-01-plugin" data-v-5414fc5c>vue管理系统从0到1-插件配置</a><p data-v-5414fc5c>
+vue管理系统从0到1-插件配置
+在根目录创建webpack.plugin.js
+const path = require(&#39;path&#39;)
+// https://github.com/lavas-project/vue-skeleton-webpack-plugin
+const SkeletonWebpackPlugin = require(&#39;vue-skeleton-we ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#eef1f5;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-06-05</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-01-vue-cli" data-v-5414fc5c>vue管理系统从0到1-vue-cli@4</a><p data-v-5414fc5c>
+使用 vue-cli@4
+安装脚手架工具
+$ npm install -g @vue/cli
+OR
+$ yarn global add @vue/cli
+创建一个项目
+$ vue create admin
+并配置项目。
+若安装缓慢报错，可尝试用 cnpm 或别的镜像源自行安装：rm -rf node_modules &amp;&amp; cnpm inst ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-02-vue-dir" data-v-5414fc5c>vue管理系统从0到1-项目结构</a><p data-v-5414fc5c>
+vue管理系统从0到1-项目结构
+一个好的目录结构能让人迅速了解项目的层次和更易维护
+当前的项目结构
+├──public
+│ ├──favicon.i
+│ └──index.htm
+├──src
+│ ├──assets
+│ │ └──logo.pn
+│ ├──component
+│ │ └──HelloWo
+│ ├──router
+│ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-03-vue-config" data-v-5414fc5c>vue管理系统从0到1-vue.config</a><p data-v-5414fc5c>
+vue管理系统从0到1-vue.config
+
+官网
+官网文档
+
+将变量全局化
+平时在定义css变量时总是得在每个页面去引用，这也太繁琐了，所以
+const path = require(&#39;path&#39;)
+module.exports = {
+  // https:// ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-04-vue.webpack" data-v-5414fc5c>vue管理系统从0到1-文件自动导入</a><p data-v-5414fc5c>
+使用require.context实现模块导入自动化
+
+require.context是什么
+一个webpack的api,通过执行require.context函数获取一个特定的上下文,主要用来实现自动化导入模块,在前端工程中,如果遇到从一个文件夹引入很多模块的情况,可以使用这个api,它会遍历文件夹中的指定文件,然后自动导入,使得不需要每次显式的调用import导入模块
+[文档]( ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-05-env-mode" data-v-5414fc5c>vue管理系统从0到1-环境与模式</a><p data-v-5414fc5c>
+vue 管理系统从 0 到 1-环境与模式
+
+文档
+
+为什么需要模式和环境
+
+我们平时在开发的过程中会有很多的环境和模式：比如我们我们npm run dev这就是一个开发环境，npm run build 打包就是一个生产环境。但是这远远是不够的。
+
+很多时候我们需要将打包好 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-6-5-06-local-preview" data-v-5414fc5c>vue管理系统从0到1-本地预览</a><p data-v-5414fc5c>
+vue管理系统从0到1-本地预览
+
+前一节我们设置了环境和模式，现在我们来实现本地预览，主要是为了本地先测试，有问题提前暴露
+
+首先我们在根目录创建一个server.js
+var express = require(&#39;express&#39;)
+var path = require(&#39;path&#39;)
+var app = express()
+// var opn = require(&#39; ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#a7d6eb;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-05-29</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-5-29-axios" data-v-5414fc5c>重新探讨axios的封装</a><p data-v-5414fc5c>
+重新探讨axios的封装
+
+问题，我们为什么要对axios进行封装
+
+先看看axios的功能
+
+Make XMLHttpRequests from the browser
+Make http requests from node.js
+Supports the Promise API
+Intercept request and response
+Transf ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#efbc00;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-05-22</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-5-22-ali-oss" data-v-5414fc5c>vue封装ali-oss sdk web直传批量上传等</a><p data-v-5414fc5c>
+封装plupload实现web直传阿里OSS，并实现批量上传
+
+&gt; 本讲解只包含前端实现和后端实现飞机票
+
+如何基于POST Policy的使用规则在服务端通过各种语言代码完成签名
+
+[对应的官方文档地址](https://help.aliyun.com/document_detail/31927.html?spm=a2c4g.11186623.6.1561.93166e28Fb8W ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#4ec07b;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-04-29</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-4-29-vue-hook-lifecycle" data-v-5414fc5c>vue中如何优雅的清除定时器</a><p data-v-5414fc5c>
+vue 中如何优雅的清除定时器
+
+首先来看一下我们平时最常见的清除方式
+
+export default {
+  data() {
+    return {
+      timer: null,
+    }
+  },
+  mounted() {
+    this.timer = setInterval(() =&gt; {}, 1000)
+  },
+  beforeDestroy() ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1d2323;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-04-06</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-4-6-plop" data-v-5414fc5c>plop 模板生成工具</a><p data-v-5414fc5c>
+plop 模板生成工具
+
+官网
+
+https://plopjs.com/documentation/#installation
+
+安装
+
+// 全局安装
+npm i -g plop
+
+// 本地安装
+npm i --save-dev plop
+
+配置
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fafafa;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-04-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-4-4-yiqin" data-v-5414fc5c>深切哀悼</a><p data-v-5414fc5c>
+深切哀悼
+
+国务院今日公告，为表达全国各族人民对抗击新冠肺炎疫情斗争牺牲烈士和逝世同胞的深切哀悼，国务院决定，2020年4月4日举行全国性哀悼活动。在此期间，全国和驻外使领馆下半旗志哀，全国停止公共娱乐活动。4月4日10时起，全国人民默哀3分钟，汽车、火车、舰船鸣笛，防空警报鸣响。
+
+如何让我们的网站符合当前的气氛
+
+html {
+    filter: graysca ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ffffff;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-04-02</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-4-2-cmder" data-v-5414fc5c></a><p data-v-5414fc5c>
+cmder的安装和运行
+
+官网
+
+下载地址
+
+下载
+
+解压后可直接运行
+
+![](https://gitee.com/artiely/Figure-bed/raw/master/i ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#03a6e1;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-04-01</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-4-1-plupload" data-v-5414fc5c>plupload中文文档整理</a><p data-v-5414fc5c>
+plupload中文文档整理
+
+一、配置参数
+
+实例化一个plupload对象时，也就是new plupload.Uploader()，需要传入一个对象作为配置参数。后面内容中出现的plupload实例均是指new plupload.Uploader()得到的实例对象
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ffffff;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-31</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-31-shituzhengmei" data-v-5414fc5c>纪念司徒正美君</a><p data-v-5414fc5c>
+纪念司徒正美君
+
+听闻司徒君离世的消息，悲痛万分！一颗前端巨星就此陨落。
+
+看着他的灰色头像不会再跳动，是什么 坠落 升空。
+
+在此借以犬夜叉的图片纪念司徒正美君
+
+![](https://gitee.com/artiely/Figure ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#8341d2;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-29</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-29-vuepress-plugin" data-v-5414fc5c>vuepress插件推荐</a><p data-v-5414fc5c>
+vuepress插件推荐
+
+个人插件推荐欢迎服用 star
+
+本文插件地址
+
+github地址vuepress-plugin-auto-front-matter
+
+该插件的作用
+
+平时我们在使用vuepree博客的时候会书写yaml格式的文章基本信息 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ffffff;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-20</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-20-antd-vue-pro" data-v-5414fc5c>vue中后台管理平台</a><p data-v-5414fc5c>
+vue中后台管理平台
+介绍
+ 这是本人开源的一个基于vue和ant-design-vue的中后台管理平台，里面有一些技巧和思路希望能给你们带来灵感和帮助，可供学习和参考。
+
+ 此项目从2019五月开源，期间间歇性更新，每有好的思路和想法都会慢慢地收集进来。可以持续关注。
+ github地址：[https://github.com/artiely/vue-admin](https://g ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-20-js-how-to-work" data-v-5414fc5c>JavaScript 复习系列 之 JavaScript是如何工作的</a><p data-v-5414fc5c>
+JavaScript 复习系列 之 JavaScript是如何工作的
+2020年注定是个特殊的年份，随着新年的到来，新型冠状病毒也加快了蔓延的脚步。时至今日我们依然在家闭关。既然是闭关，那我也得修炼点什么啊。
+他来了！JavaScript！[或简写js] 其实本来想做出个什么高大上的产品出来的，计划是做一个桌面应用程序，大致包含博客的书写和自动发布，后面越想越不着边际不知从何下手。于是 决 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#00040e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-19</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-19-timer.js" data-v-5414fc5c>timer.js 介绍</a><p data-v-5414fc5c>
+timer.js 介绍
+Timer.js 是一个简单而轻量的定时器管理库，并且无依赖。
+
+安装
+npm install timer.js
+使用示例
+制作披萨的倒计时
+import Timer from &#39;timer.js&#39;
+var pizzaTimer = new Timer();
+var pizzaCookingTime = 15 * 60; ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2e7bd7;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-18</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-18-electron-mirror-down" data-v-5414fc5c>Electron 镜像下载慢的解决办法</a><p data-v-5414fc5c>
+Electron 镜像下载慢的解决办法
+因为 Electron 的源在国外，如果我们直接使用 npm 进行安装，由于众所周知的原因，如果你没有一个好的梯子，通常下载速度只有几 k 到十几 k的速度。如图：
+
+运气非常好时，可能能跑到100 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-18-electron-updater" data-v-5414fc5c>Electron 自动更新</a><p data-v-5414fc5c>
+Electron 自动更新
+
+从0实现一个electron自动更新的最小demo
+
+本实例基于vue，不使用vue也大同小异，目的只是在后期更加的方便使用组件库，有差异的地方我会指出。
+
+初始化一个vue项目
+初始化项目，前面的vue脚手架环境安装忽略
+vue create electron-updater-demo
+中间的流程略
+cd electron-u ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#3488fd;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2020-03-16</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-16-chrome-plugin" data-v-5414fc5c>让你的chrome如虎添翼</a><p data-v-5414fc5c>
+让你的chrome如虎添翼
+
+谷歌访问助手
+大多数情况下我们是无法访问谷歌的，所以我们先下载一个谷歌访问助手帮助我们访问谷歌应用商店，这是一个破解版。正版也是可以免费使用的，但是他会修改你的主页并且强制绑定。所以有点脾气的都忍不了。
+
+![](https://gitee.com/artiely/Figure-bed/raw/master/images/20200316120320.pn ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-16-vscode-plugin" data-v-5414fc5c>如何使你的vscode更好用</a><p data-v-5414fc5c>
+如何使你的vscode更好用
+VS Code 写代码是真好用、真爽、真香！
+
+想必你也已经听过身边不止一个人这么说。最近的 JS 2019 报告中，VS Code 也是以压倒性的优势获胜第一，其他的编辑器只能被无情碾压在地上摩擦……
+ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2020/2020-3-16-windows-plugin" data-v-5414fc5c>windows 好用的软件推荐</a><p data-v-5414fc5c>
+windows 好用的软件推荐
+
+wox
+应用管理新体验。
+ctrl+space(空格)
+官网
+
+![](https://gitee.com/artiely/Figure-bed ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fee200;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-11-16</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-11-16-nodejs-api" data-v-5414fc5c>nodejs核心api</a><p data-v-5414fc5c>
+nodejs核心api
+
+目标
+
+理解nodejs常用核心api
+
+加深对nodejs设计思想的理解
+
+核心api
+
+Buffer
+
+在引入 TypedArray 之前，JavaScript 语言没有用于读取或操作二进制数据流的机制。 Buffer 类是作为 Node.js API 的一部分引入的 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2c3033;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-10-27</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-10-27-node-pm2" data-v-5414fc5c>Nodejs通用业务模块</a><p data-v-5414fc5c>
+Nodejs进程守护
+
+目标
+
+理解什么是进程守护
+理解为什么nodejs服务需要进程守护
+从源码理解Egg对进程守护的处理
+
+进程守护
+
+守护进程，也即通常所说的 Daemon 进程，是 Linux 下一种特殊的后台服务进程，它独立于控制终端并且周期性的执行某种任务或者等待处理某些发生的事件。守护进程通常在系统引导时启动，在系统关闭时终止。Linux ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#9ae3a9;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-10-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-10-3-alinode" data-v-5414fc5c>Nodejs通用业务模块</a><p data-v-5414fc5c>
+Nodejs通用业务模块
+
+目标
+
+了解nodejs的生态与未来
+理解alinode监控体系的应用场景与使用
+理解nodejs在云原生应用领域的生态与发展
+
+why
+
+知己知彼，百战不殆
+开阔技术视野，技术的提升不能仅仅停留在crud领域
+
+nodejs之生态
+
+2019年前端，选择Nodejs 还是 PHP？
+
+观点：
+
+作为前端玩一 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#323d47;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-08-14</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-8-14-nosql" data-v-5414fc5c>NoSQL数据库</a><p data-v-5414fc5c>
+NoSQL数据库
+
+介绍
+
+主要内容
+
+Redis开发与实战(内存型)
+Memcached入门(内存型)
+MongoDb入门(存储型)
+
+redis和memcached是同一类型，内存型。MongoDb是存储型。
+
+着重讲解redis,存储性数据库还是mysql的天下。
+
+学习目标
+
+掌握非关系性数据库的特点以及使用
+掌握N ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#00a1d8;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-07-13</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-7-13-automated-testing" data-v-5414fc5c>自动化测试</a><p data-v-5414fc5c>
+自动化测试
+
+介绍
+
+在前端界，浏览器兼容性是让工程师们头疼的问题，对于经验丰富的人来说，很清楚浏览器有哪些坑，但是对于大部分程序员，最可怕的是代码明明在这个浏览器运行得很好，但是到了另一个浏览器中就不能正常运行了。对于这部分的程序员，保障代码能正常运行的方法便是能尽早发现问题，然后将其解决。
+
+为什么需要自动化测试？
+
+项目经过不断的开发，最终肯定会趋于稳定，在**适当 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#135bd0;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-07-06</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-7-6-android-studio-flutter-shortcut" data-v-5414fc5c>android studio flutter 之快捷键</a><p data-v-5414fc5c>
+android studio flutter 之快捷键
+
+创建新的StatelessWidget或者StatefulWidget
+
+我们不必手动去编写继承StatelessWidget或者StatefulWidget并重写build()方法。IDE已经提供了相应的快捷键。
+
+只需要输出stless就可以创建一个StatelessWidget。
+
+![](https://gitee ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-7-6-dart-flutter-conf" data-v-5414fc5c>Dart,flutter相关环境</a><p data-v-5414fc5c>
+Dart介绍：
+
+&gt;Dart是由谷歌开发的计算机编程语言,它可以被用于web、服务器、移动应用 和物联网等领域的开发。Dart诞生于2011年，号称要取代JavaScript。但是过去的几年中一直不温不火。直到Flutter的出现现在被人们重新重视。要学Flutter的话我们必须首先得会Dart。官网：https://dart.dev/
+
+Dart环境搭建：
+
+要在我们本地开发Da ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#0e01c9;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-27</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-27-eslint-test" data-v-5414fc5c>项目质量监测</a><p data-v-5414fc5c>
+项目质量监测
+
+介绍
+
+没有规矩不成方圆，所以我们写代码也要有&quot;规矩&quot;，但是我们通常记不住所有的&quot;规矩&quot;，因为人嘛，不可能不犯错。但是，这难不到我们程序员，我们让机器、代码、程序帮我们搞定，让它们来帮我们进行代码质量检查，以便提高的程序的健壮性。
+
+通常来说，项目的质量决定了：
+
+软件项目的命运
+软件项目的可维护性
+软件项目的运维成本
+软件项目的 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1d212c;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-19</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-19-fontend-performance-optimization" data-v-5414fc5c>前端性能优化</a><p data-v-5414fc5c>
+前端性能优化
+
+介绍
+
+任何小型企业，博主或成长型公司在网上出现时面临的最大挑战之一就是“页面加载时间”问题。除非您能确保尽可能快速无缝地加载每个页面，您才可以拥有世界上最好最引人注目的网站，否则您仍然无法赢得关注者的尊重和忠诚度。
+
+根据当今网络上的所有主要浏览器公司的说法，如果每个网站都想要排名靠前，表现良好并确保客户满意，那么每个网站都需要快。毕竟，如果您的网页加载速度很慢，那 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f8f8f8;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-12</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-12-deploy" data-v-5414fc5c>持续集成与持续部署</a><p data-v-5414fc5c>
+持续集成与持续部署
+
+介绍
+
+那些大厂们，天天DevOps、持续集成的？到底在讲些什么？给你揭开持续集成与持续部署的面纱！！没有什么难的，盘它！
+
+传统的开发过程中的坑：
+
+BUG总是在最后才发现
+越到项目后期，加班越严重
+交付无法保障
+变更频繁导致效率低下
+无效的等待多，用户满足度低
+
+![img](https://gitee.com/arti ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#76c9e8;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-06</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-6-css-fixedleft-autoright" data-v-5414fc5c>css实现左边固定宽右边自适应</a><p data-v-5414fc5c>
+show turns
+
+show you the code
+ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-6-vue-observable" data-v-5414fc5c>vue observable api 初应用</a><p data-v-5414fc5c>
+vue 列表的按需刷新
+在vue 2.6.0 新增了一个api observable 可实现全局的数据相应，一定程度上可以取代vuex
+所以我在项目中第一次使用了他，
+我们的业务场景是这样的，一个订单列表，可以无限下拉，假如：我下拉了 3 页，点击一个订单可以进入详情，在详情里可以改变订单的状态，但是从详情返回的时候列表应该刷新到第一页才能看到状态的改变【前提是后端排序是按更新时间】， ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2db1f0;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-04</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-4-docker" data-v-5414fc5c>容器化运维操作</a><p data-v-5414fc5c>
+容器化运维操作
+
+日趋复杂的运维开发环境，对虚拟服务器及应用服务的要求更加的多元化。我们需要更加容易扩展、性能优越、方便监控的管理服务，容器化应用、容器化运维应运而生。
+
+【知己知彼】你将学习到：
+
+理解/安装docker容器技术
+秒级快速部署mysql、nginx、tomcat等服务
+使用容器技术发布nodejs应用
+…
+
+**【工欲善其事，必先利其 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-4-nodejs-events" data-v-5414fc5c>nodejs事件循环与多进程</a><p data-v-5414fc5c>
+nodejs事件循环与多进程
+
+介绍
+
+了解事件循环的概念
+学习浏览器中的事件循环机制
+学习nodejs中的事件循环机制
+了解多进程，多线程之间的区别
+学习nodejs中的多进程并使用cluster来开启多进程
+
+目标
+深入掌握浏览器与nodejs中的事件循环机制，并且能理解它们之间的区别
+使用cluster开启多进程
+
+第一章 事件循环介绍
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#16517;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-06-01</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-6-1-linux" data-v-5414fc5c>Linux 服务器</a><p data-v-5414fc5c>
+Linux 服务器
+
+Linux是操作系统：
+
+Linux作为自由软件和开放源代码软件发展中最著名的例子，背靠社区与商业化的使用，使其得到了广泛的应用与发展。
+
+Linux无处不在：
+
+世界上500个最快的超级计算机90 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#16932;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-05-05</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-5-5-restful-graphql" data-v-5414fc5c>GraphQL 介绍</a><p data-v-5414fc5c>
+GraphQL 介绍
+
+接口开发方式
+
+RESTful
+GraphQL
+
+RESTful 接口问题
+
+接口粒度比较细，很多场景需要调用多次请求才能完成一个功能
+接口扩展、维护成本高
+接口响应的数据格式无法预知（json已经成为主流格式）
+
+GraphQL概述
+
+&gt; GraphQL 既是一种用于 API 的查询语言，也是一个满足你数据查询的运行时。
+&gt; ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ca3838;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-04-16</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-4-16-vue-cli3+to-plugin" data-v-5414fc5c>Vuecli3+发布组件库到npm</a><p data-v-5414fc5c>
+Vuecli3+发布组件库到npm
+
+创建项目
+vue create my-plugin
+
+调整目录
+我们需要一个目录存放组件，一个目录存放示例，按照以下方式对目录进行改造。
+|-- src
+|-- packages      // 新增 packages 用于编写存放组件
+
+配置项目以支持新的目录结构
+我们通过上一步的 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#0755a2;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-04-15</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-4-15-nodejs-tcp-udp-h2" data-v-5414fc5c>Node.js 网络通信</a><p data-v-5414fc5c>
+Node.js 网络通信
+
+Node 是一个面向网络而生的平台，它具有事件驱动、无阻塞、单线程等特性，具备良好的可伸缩性，使得它十分轻量，适合在分布式网络中扮演各种各样的角色。同时 Node 提供的 API 十分贴合网络，适合用它基础的 API 构建灵活的网络服务。就是给大家介绍 Node 在网络通信编程方面的具体能力。
+
+利用 Node 可以十分方便的搭建网络服务器。在 Web 领域，大多 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#c2175b;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2019-04-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-4-3-sentry-sourcemap" data-v-5414fc5c>记sentry配置sourcemap后的优化</a><p data-v-5414fc5c>
+记sentry配置sourcemap后的优化
+需求！
+
+打包后的文件自动过滤出sourcemap并压缩成zip包
+
+项目结构：
+
+说明
+首先说明一下为什么会有这样的需求
+因为项目中集成了 sentry 关于sent ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2019/2019-4-3-vuepress-theme" data-v-5414fc5c>如何创建自定义 VuePress 主题</a><p data-v-5414fc5c>
+如何创建自定义 VuePress 主题
+
+如果您已经听说过 VuePress，那么可能会知道它是一个功能极小的静态站点生成器。VuePress 使创建文本繁多的文档网站变得简单，比 Nuxt.js 容易得多。
+
+但是，您是否知道 Vu ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#222222;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-10-10</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-axios" data-v-5414fc5c>axios认识</a><p data-v-5414fc5c>
+axios认识
+Axios 是一个基于 promise 的 HTTP 库，可以用在浏览器和 node.js 中。
+
+Features
+
+从浏览器中创建 XMLHttpRequests
+从 node.js 创建 http 请求
+支持 Promise API
+拦截请求和响应
+转换请求数据和响应数据
+取消请求
+自动转换 JSON 数据
+客户端支持防御 XSRF
+
+浏览器支持
+ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-chrome-dev-tips" data-v-5414fc5c>chrome开发使用小技巧</a><p data-v-5414fc5c>
+开发工具使用小技巧
+
+chrome开启跨域
+跨域的解决办法有很多
+
+这里先来个简单暴力一劳永逸的办法
+
+1.找到chrome的安装目录chrome.exe新建快捷方式
+
+2.重命名快捷方式跨域.exe右键属性 目标 加入参数  --disable-web-security 记得前面空格
+
+3.快捷方式发送到桌面
+
+&gt; 关闭所有chrome然后启动跨域.exe 会提示 您使 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-get-" data-v-5414fc5c>get与post的区别</a><p data-v-5414fc5c>
+get与post的区别
+GET和POST是HTTP请求的两种基本方法，要说它们的区别，接触过WEB开发的人都能说出一二。
+
+最直观的区别就是GET把参数包含在URL中，POST通过request body传递参数。
+
+你可能自己写过无数个GET和POST请求，或者已经看过很多权威网站总结出的他们的区别，你非常清楚知道什么时候该用什么。
+
+当你在面试中被问到这个问题，你的内心充满了自信和喜悦 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-git-green-pointer" data-v-5414fc5c>github恢复属于你的小绿点</a><p data-v-5414fc5c>
+github恢复属于你的小绿点
+
+首先要分析为什么你的提交记录没有被github识别：
+
+进行Commits的用户没有被关联到你的Github帐号中。
+
+不是在这个版本库的默认分支进行的Commit。
+
+这个仓库是一个Fork仓库，而不是独立仓库。
+
+我估计很多人和我一样都是第一个原因，初用github远程管理代码和那些经常更换使用机器的原因有可能用错账户名和邮箱，其实我在修改自己的原来的用 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-js-bit-operation" data-v-5414fc5c>js常见位运算理解</a><p data-v-5414fc5c>
+js常见位运算理解
+我们可能很少在编程中用位运算，如果没深入学习，可能也很难理解。平时的数值运算，其实是要先转换成二进制再进行运算的，而位运算就是直接进行二进制运算，所以位运算的执行效率肯定是更高的。下面通过一些实例来加深对位运算的理解。
+
+按位与(&amp;)
+
+&amp;&amp;运算符我们都知道，只有两个都为真，结果才为真。&amp;道理是一样的，只有两个数的值为1时，才返回1。例如1和3的按位与操作：
+
+`` ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-npm-nrm" data-v-5414fc5c>npm常见问题</a><p data-v-5414fc5c>
+npm安装失败
+
+在执行 npm install时，出现如下错误，
+
+npm ERR! phantomjs-prebuilt@2.1.14 install: node install.js
+
+npm ERR! Exit status 1
+
+npm ERR!
+
+npm ERR! Failed at the phantomjs-prebuilt@2.1.14 install ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-pm2" data-v-5414fc5c>pm2进阶使用之一键发布</a><p data-v-5414fc5c>
+pm2进阶使用之一键发布
+启用集群模式
+
+只需要在启动应用时带上i参数
+
+pm2 start app.js -i max
+
+max：意味着PM2将自动检测可用的CPU数量和运行多个进程可以在负载均衡模式(但是不推荐使用)
+
+或者使用json文件启动的
+
+{
+  &quot;apps&quot; : [{
+    &quot;script&quot;    : &quot;api.js&quot;,
+    &quot;instan ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-10-vue-pracel" data-v-5414fc5c>vue pracel试玩</a><p data-v-5414fc5c>
+vue pracel试玩
+安装
+
+github https://github.com/parcel-bundler/parcel?utmsource=goldbrowser_extension
+
+首先通过 Yarn 或者 npm 安装 Parcel :
+
+npm install -g parcel-bundler
+
+在你正在使用的项目目录下创建一个 packag ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fff;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-10-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-10-7-node-spider" data-v-5414fc5c>网络爬虫开发</a><p data-v-5414fc5c>
+网络爬虫开发
+
+什么是爬虫
+
+可以把互联网比做成一张“大网”，爬虫就是在这张大网上不断爬取信息的程序
+
+所以一句话总结：爬虫是请求网站并提取数据的自动化程序
+
+爬虫的基本工作流程如下：
+
+向指定的URL发送http请求
+获取响应（HTML、XML、JSON、二进制等数据）
+处理数据（解析DOM、解析JSON等）
+将处理好的数据进行存储
+
+![img](h ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f0de3e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-09-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-9-7-js" data-v-5414fc5c>javascript 的执行逻辑</a><p data-v-5414fc5c>
+你将了解
+
+执行栈（Execution stack）
+执行上下文（Execution Context）
+作用域链（scope chains）
+变量提升（hoisting）
+闭包（closures）
+this 绑定
+
+执行栈
+
+又叫调用栈，具有 LIFO（last in first out 后进先出）结构，用于存储在代码执行期间创建的所有执行上下文。
+
+当 J ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#02b981;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-08-08</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-8-8-question" data-v-5414fc5c>提问的艺术</a><p data-v-5414fc5c>
+提问的艺术
+
+正如查尔斯吉特林所说的：只要能把问题讲清楚，就已经解决了一半问题。
+
+提问前你必须需要知道的事情
+
+要知道， Free 的正确翻译是 自由，而非免费。
+要知道，愿意回答问题的人，都是 可爱 的人 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-8-8-vue-rules" data-v-5414fc5c>Vue 前端开发规范</a><p data-v-5414fc5c>
+Vue 前端开发规范
+
+基于 Vue 官方风格指南整理
+
+一、强制
+
+代码必须遵循 eslint
+
+使用 eslint standard 规范
+
+组件命名
+
+组件名为多个单词组件名应该始终是多个单词的，根组件 App 除外。
+
+正例：
+
+export default {
+  name: &#39;TodoItem&#39;
+  // ...
+}
+
+反例：
+
+` ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#1a1a1a;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-08-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-8-7-egg-start" data-v-5414fc5c>Egg.js 入门</a><p data-v-5414fc5c>
+Egg.js 入门
+
+Egg.js 官网
+官 网：https://eggjs.org
+中文网站：https://eggjs.org/zh-cn/
+Egg.js 是什么?
+Egg.js 是《阿里旗下产品》基于 Node.js 和 Koa 是一个 Nodejs 的企业级应用开发框架。
+可以帮助发团队和开发人员降低开发和维护成本。
+Express 和 Koa 是 Node.js 社区广 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ffb00e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-11</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-11-electron-nedb" data-v-5414fc5c>Electron 应用操作数据之nedb数据库</a><p data-v-5414fc5c>
+Electron 应用操作数据之nedb数据库
+
+Electron 应用操作数据的几种方法：
+
+1、远程api接口      （多个客户端公用一套数据）
+
+2、连接远程数据库    (局域网内使用  多个客户端公用一套数据 )  （不建议使用）
+
+3、连接本地数据库   （nedb    sqlite）     应用本地保存数据（localstore   5M）     用户设置信息 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-11-electron-shortcut-cliboard-nativeimage" data-v-5414fc5c>Electron注册全局快捷键（globalShortcut）,剪切板（clipboard ）与nativeImage 模块</a><p data-v-5414fc5c>
+Electron 注册全局快捷键（globalShortcut）
+var app = require(&#39;app&#39;)
+var globalShortcut = require(&#39;electron&#39;).globalShortcut
+app.on(&#39;ready&#39;, function() {
+  // Register a &#39;ctrl+x&#39; shortcut listener.
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#101e2e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-10</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-10-electron-message" data-v-5414fc5c>Electron实现消息通知与监听网络</a><p data-v-5414fc5c>
+Electron实现消息通知
+Electron 里面的消息通知是基于 h5 的通知 api 实现的。
+
+const option = {
+  title: &#39;title&#39;,
+  body: &#39;body&#39;,
+  icon: ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-10-websocket" data-v-5414fc5c>WebSocket</a><p data-v-5414fc5c>
+WebSocket
+
+介绍
+
+现在，很多网站为了实现推送技术，所用的技术都是 Ajax 轮询。轮询是在特定的的时间间隔（如每1秒），由浏览器对服务器发出HTTP请求，然后由服务器返回最新的数据给客户端的浏览器。这种传统的模式带来很明显的缺点，即浏览器需要不断的向服务器发出请求，然而HTTP请求可能包含较长的头部，其中真正有效的数据可能只是很小的一部分，显然这样会浪费很多的带宽等资源。 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#273a49;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-09</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-9-electron-ico" data-v-5414fc5c>Electron 系统托盘 托盘右键菜单、托 盘图标闪烁 点击右上角关闭按钮隐 藏到托盘</a><p data-v-5414fc5c>
+Electron 系统托盘 托盘右键菜单、托 盘图标闪烁 点击右上角关闭按钮隐 藏到托盘
+
+![](https://gitee.com/artiely/Figure-bed/raw/master/images/20200308122259 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2f3341;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-08</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-8-electron-dialog" data-v-5414fc5c>Electron 弹出框</a><p data-v-5414fc5c>
+Electron 弹出框
+
+dialog 模块提供了 api 来展示原生的系统对话框，例如打开文件框，alert 框， 所以 web 应用可以给用户带来跟系统应用相同的体验。
+
+dialog.showErrorBox(&#39;ti ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-8-electron-shell-url-webview" data-v-5414fc5c>Electron 在用户默认浏览器中打开 URL</a><p data-v-5414fc5c>
+Electron shell 模块 在用户默认浏览器中打开 URL 的示例
+
+shell 模块提供了集成其他桌面客户端的关联功能.
+var shell = require(&#39;shell&#39;);
+shell.openExternal(&#39;https://github.com&#39;);
+Electron DOM `` 标签。
+Webview 与 i ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#50737e;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-7-electron-main-render" data-v-5414fc5c>Electron 主进程和渲染进程通信</a><p data-v-5414fc5c>
+Electron 主进程和渲染进程通信
+
+有时候我们想在渲染进程中通过一个事件去执行主进程里面的方法。或者在渲染进程中通知 主进程处理事件，主进程处理完成后广播一个事件让渲染进程去处理一些事情。这个时候就 用到了主进程和渲染进程之间 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2d3135;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-06</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-6-electron-menu-shortcut" data-v-5414fc5c>Electron自定义软件顶部菜单,上下文菜单以及绑定快捷键</a><p data-v-5414fc5c>
+Electron自定义软件顶部菜单以及绑定快捷键
+Electron 中 Menu 模块可以用来创建原生菜单，它可用作应用菜单和 context 菜单。 这个模块是一个主进程的模块，并且可以通过 remote 模块给渲染进程调用。
+const { Menu } = require(&quot;electron&quot;);
+    let template = [
+      {
+        l ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#01bcf3;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-05</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-5-electron-model" data-v-5414fc5c>Electron 模块介绍</a><p data-v-5414fc5c>
+Electron 主进程和渲染进程中的模块
+
+Electron 渲染进程中通过 remote 模块调用主进程中的 BrowserWindow 打开新窗口。
+
+主进程代码：
+const electron = requi ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#5587d7;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-04</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-4-electron-base" data-v-5414fc5c>Electron基本概念</a><p data-v-5414fc5c>
+Electron运行的流程
+
+Electron 主进程和渲染进程
+
+主进程和渲染器进程：
+
+Electron 运行 package.json 的 main 脚本的进程被称为主进程 。 在主进程中运行的脚 本 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#2d3135;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-07-03</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-7-3-electron-init" data-v-5414fc5c>Electron了解与开始</a><p data-v-5414fc5c>
+Electron了解与开始
+为什么要学 Electron。
+
+Electron 是一个跨平台的桌面应用开发框架，用 html css js 的技术开发桌面上面可以安装的 软件。“Electron 又为前端开发者谋得了一份好的差事”。想起在网路里流传很广的一句话“不要和老夫说什么 C++，Java，老夫行走江湖就靠一把 JS，遇到需求撸起袖子就是干”。是的 Electron 看上去是在蚕 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#332a2a;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-06-26</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-6-26-web-koa-egg" data-v-5414fc5c>web应用开发框架</a><p data-v-5414fc5c>
+web应用开发框架
+
+koa入门与使用
+
+image-20190620190151695
+
+简介
+
+Koa 是一个新的 web 框架，由 Express 幕后的原班人马打造， 致力于成为 web 应用和 API 开发领域 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#dddee0;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-06-09</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-6-9-nuxt" data-v-5414fc5c>Nuxt基础入门</a><p data-v-5414fc5c>
+Nuxt基础入门
+Nuxt 是一个基于 Vue 生态的更高层的框架，为开发服务端渲染的 Vue 应用提供了极其便利的开发体验。更酷的是，你甚至可以用它来做为静态站生成器,推荐尝试。目前Nuxt.js官方文档目前已经覆盖了大部分常用需求 , 这篇文章主要讲nuxt工程中一些需要注意的知识点，以及一些比较常用的功能介绍。
+
+安装和部署
+
+npm install -g vue-cl ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#f8f8f8;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-03-12</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-3-12-nodejs-npm" data-v-5414fc5c>如何实现一个命令行工具的npm包</a><p data-v-5414fc5c>
+如何实现一个命令行工具的npm包
+我们平时会使用到很多的基于命令行的npm包，其中我们最熟悉的前端三大框架的脚手架，例如vue-cli
+他们大致的工作原理是什么呢，今天来实现一个最基本的需求。
+
+这样的结构图相信大家都见过
+├──dist
+│ ├──css
+│ │ └──app.ae730c66.css
+│ ├──js
+│ │ ├──app.13838aa1.js
+│ │ ├── ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#6b8359;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2018-01-30</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2018/2018-1-30-centos-setup-nodejs" data-v-5414fc5c>CentOS下如何安装nodejs及相关环境</a><p data-v-5414fc5c>
+CentOS下如何安装nodejs及相关环境
+
+您将了解
+CentOS下如何安装nodejs
+CentOS下如何安装NVM
+CentOS下如何安装git
+CentOS下如何安装pm2
+
+适用对象
+本文档介绍如何在阿里云CentOS系统的云服务器ECS实例上，安装Nodejs并部署项目。
+准备工作
+部署之前，请做如下准备工作：
+
+购买ECS实例
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#7bcdeb;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-07-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-7-7-css-rules" data-v-5414fc5c>css 规范</a><p data-v-5414fc5c>
+css 规范
+
+语法
+使用两个空格的 soft tabs — 这是保证代码在各种环境下显示一致的唯一方式。
+使用组合选择器时，保持每个独立的选择器占用一行。
+为了代码的易读性，在每个声明的左括号前增加一个空格。
+声明块的右括号应该另起一行。
+每条声明 : 后应该插入一个空格。
+每条声明应该只占用一行来保证错误报告更加准确。
+所有声明应该以分号结尾。虽然最后一 ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-7-7-js-rules" data-v-5414fc5c>JS 规范</a><p data-v-5414fc5c>
+JS 规范
+https://standardjs.com/rules-zhcn.html
+命名规范
+
+驼峰式命名法介绍
+
+Pascal Case 大驼峰式命名法：首字母大写。eg：StudentInfo、UserInfo、ProductInfo
+
+Camel Case 小驼峰式命名法：首字母小写。eg：studentInfo、userInfo、productInfo
+ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-7-7-rules-file" data-v-5414fc5c>文件命名规范</a><p data-v-5414fc5c>
+文件命名规范
+
+下面列出了一些常用的名称，并不是按出现频次排序，但是列出来的都是出现频次非常高的单复数形式都出现了的只列出次数最多的注意，都是目录名称，不是文件名
+
+src，source
+  源代码，用 src 居多
+
+test，tests
+  测试文件，也经常用test，facebook 的测试框架 jest 默认的测试文件目录就是test
+
+* ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-7-7-rules-html" data-v-5414fc5c>html 规范</a><p data-v-5414fc5c>
+html 规范
+语法
+使用两个空格的 soft tabs — 这是保证代码在各种环境下显示一致的唯一方式。
+嵌套的节点应该缩进（两个空格）。
+在属性上，使用双引号，不要使用单引号。
+不好在自动闭合标签结尾处使用斜线 - [HTML5 规范](https://dev.w3.org/html5/spec-author-view/syntax.html#syntax-sta ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#241313;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-07-04</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-7-4-moment" data-v-5414fc5c>moment.js常用时间示例,时间管理</a><p data-v-5414fc5c>
+moment.js常用时间示例,时间管理
+&#39;今天&#39;: moment()
+&#39;昨天&#39;: moment().subtract(1, &#39;days&#39;)
+&#39;过去7天&#39;:moment().subtract(7, &#39;days&#39;)，moment()
+&#39;上月&#39;: moment().subtract(1, &#39;month&#39;).startOf(&#39;month&#39;) , moment().subtract(1, ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#fefcfd;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-06-10</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-10-tcp" data-v-5414fc5c>TCP协议之握手</a><p data-v-5414fc5c>
+TCP协议之握手
+
+TCP（Transmission Control Protocol 传输控制协议）是一种面向连接的、可靠的、基于字节流的传输层通信协议，由IETF的RFC 793定义
+
+建立TCP需要三次握手才能建立，而断开连接则需要四次握手
+
+三次握手Three-way Handshake
+
+首先Client端发送连接请求报文，Server端接受连接后回复ACK报文，并为这次连接 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#ffffff;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-06-09</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-9-form-default-submit" data-v-5414fc5c>表单的默认行为</a><p data-v-5414fc5c>
+表单的默认行为
+&gt; 当form下只包裹一个input的情况下，在回车时，会自动提交（页面会刷新）
+
+解决办法：加入一个input display:none ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#602ad2;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-06-08</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-8-yahoo-rules14" data-v-5414fc5c>雅虎性能优化的十四条规则</a><p data-v-5414fc5c>
+雅虎性能优化的十四条规则
+
+作为一位前端技术人员，了解网站的性能优化方面的知识是很基本的，但是我很惭愧我现在才了解到这一点T^T，以下是我学习yahoo性能优化十四条规则的笔记：
+
+一、减少http请求次数
+
+如何减少http请求次数：
+
+&gt; - 组合页面中的图片到单个文件中，并使用css的background-image和background-position属性来实现所需部分 ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#c0cad6;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-06-07</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-7-css-mobile-scroll-through" data-v-5414fc5c>移动端滚动穿透解决办法</a><p data-v-5414fc5c>
+移动端滚动穿透解决办法
+
+问题
+
+在滚动模态框里的内容的时候，背景（模态框下面的内容）也在跟着滚动
+
+css 之 overflow: hidden
+
+.modal-open {
+  &amp;,
+  body {
+    overflow: hidden;
+    height: 100%;
+  }
+}
+
+页面弹出层上将 .modal-open 添加到 html ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><li class="el-timeline-item" data-v-5414fc5c><div class="el-timeline-item__tail"></div><!--v-if--><div class="el-timeline-item__dot"><!--[--><span class="dot" style="background:#3a4953;" data-v-5414fc5c></span><!--]--></div><div class="el-timeline-item__wrapper"><div class="el-timeline-item__timestamp is-top">2017-06-06</div><div class="el-timeline-item__content"><!--[--><div data-v-5414fc5c><!--[--><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-6-css-1px" data-v-5414fc5c>移动端1px解决方案</a><p data-v-5414fc5c>
+移动端1px解决方案
+1.用小数来写px值
+
+IOS8以上已经支持带小数的px值, media query对应devicePixelRatio有个查询值-webkit-min-device-pixel-ratio, css可以写成这样
+
+.border { border: 1px solid #999 }
+@media screen and (-webkit-min-de ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-6-css-ios-android" data-v-5414fc5c>移动端css优化</a><p data-v-5414fc5c>
+ios 下定位的层如果有表单，在输入时键盘弹起，表单的光标不会跟随（系统bug）
+
+  解决办法：有表单数据尽量在页面完成，不用类似popup的浮层
+
+ios 下滑动不平滑
+
+html,
+body {
+  -webkit-overflow-scrolling: touch;
+}
+
+ios 下表单的默认外观样式
+
+input select{
+  -webk ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-6-css-sticky-footer" data-v-5414fc5c>什么是Sticky footers布局</a><p data-v-5414fc5c>
+什么是Sticky footers布局
+
+在网页设计中，Sticky footers设计是最古老和最常见的效果之一，大多数人都曾经经历过。它可以概括如下：如果页面内容不够长的时候，页脚块粘贴在视窗底部；如果内容足够长时，页脚块会被内容向下推送。
+
+固定高度的实现方式
+
+html
+ ...</p></div></div><div class="time-post" data-v-5414fc5c><div class="el-image" style="width:50px;height:50px;margin-right:10px;" data-v-5414fc5c><!--[--><div class="el-image__placeholder"></div><!--]--><!--teleport start--><!--v-if--><!--teleport end--></div><div class="right" data-v-5414fc5c><a href="/post/2017/2017-6-6-git" data-v-5414fc5c>git 版本管理</a><p data-v-5414fc5c>
+git 版本管理
+
+下载地址
+
+配置 git 用户和邮箱
+
+$ git config --global user.name &quot;你的github用户名&quot;
+$ git config --global user.email &quot;你的github邮箱&quot;
+不配置用户名和邮箱的话无法提交,因为git不知道你是谁
+
+查看配置
+ ...</p></div></div><!--]--></div><!--]--></div><!--v-if--></div></li><!--]--></ul></div></div></div></div><div class="footer"><div class="follow"><a href="https://github.com/artiely" target="_target" title="github"><i class="icon iconfont"></i></a><a href="https://gitee.com/artiely" target="_target" title="gitee"><i class="icon iconfont"></i></a><a href="https://www.npmjs.com/~artiely" target="_target" title="npm"><i class="icon iconfont"></i></a><a href="mailto:artiely1024@gmail.com" title="gmail"><i class="icon iconfont"></i></a><a href="https://www.youtube.com/channel/UC3U9zfLMepBqyQjlvEVhQDQ?view_as=subscriber" target="_target" title="youtube"><i class="icon iconfont"></i></a><a href="https://www.zhihu.com/people/artiely-19" target="_target" title="zhihu"><i class="icon iconfont"></i></a><a href="https://space.bilibili.com/31432769?spm_id_from=333.33.b_73656375726974794f75744c696e6b.1" target="_target" title="bilibili"><i class="icon iconfont"></i></a></div><p class="footer-copyright"> ©Artiely <span class="time">-2019-2021</span></p></div><!--]--></div>
+    <script>__VP_HASH_MAP__ = JSON.parse("{\"index.md\":\"1dd82a23\",\"about_index.md\":\"8cacf850\",\"code_index.md\":\"bc9afb37\",\"comment_index.md\":\"305643b2\",\"tags_index.md\":\"b394f281\",\"timeline_index.md\":\"64c3604b\",\"post_2017_2017-6-10-tcp.md\":\"4bff6220\",\"post_2017_2017-6-6-css-1px.md\":\"8b792530\",\"post_2017_2017-6-6-css-ios-android.md\":\"34b21ff6\",\"post_2017_2017-6-6-css-sticky-footer.md\":\"bdbb7d21\",\"post_2017_2017-6-6-git.md\":\"ce988f32\",\"post_2017_2017-6-7-css-mobile-scroll-through.md\":\"24eda4a4\",\"post_2017_2017-6-8-yahoo-rules14.md\":\"d04ad885\",\"post_2017_2017-6-9-form-default-submit.md\":\"c81e706c\",\"post_2017_2017-7-4-moment.md\":\"7ac67b06\",\"post_2017_2017-7-7-css-rules.md\":\"3eaaa51d\",\"post_2017_2017-7-7-js-rules.md\":\"295f14fe\",\"post_2017_2017-7-7-rules-file.md\":\"3059937d\",\"post_2017_2017-7-7-rules-html.md\":\"81d1f61b\",\"post_2018_2018-1-30-centos-setup-nodejs.md\":\"21e1e8d2\",\"post_2018_2018-10-10-axios.md\":\"f0be1150\",\"post_2018_2018-10-10-chrome-dev-tips.md\":\"6fa08b9c\",\"post_2018_2018-10-10-get-post.md\":\"29221919\",\"post_2018_2018-10-10-git-green-pointer.md\":\"3ccf6966\",\"post_2018_2018-10-10-js-bit-operation.md\":\"1c33ecb0\",\"post_2018_2018-10-10-npm-nrm.md\":\"e96c01f5\",\"post_2018_2018-10-10-pm2.md\":\"4acd4997\",\"post_2018_2018-10-10-vue-pracel.md\":\"88950f83\",\"post_2018_2018-10-7-node-spider.md\":\"bef70d64\",\"post_2018_2018-3-12-nodejs-npm.md\":\"fde5fdb4\",\"post_2018_2018-6-26-web-koa-egg.md\":\"cb1f0540\",\"post_2018_2018-6-9-nuxt.md\":\"1d060bc9\",\"post_2018_2018-7-10-electron-message.md\":\"7eed85c9\",\"post_2018_2018-7-10-websocket.md\":\"59c778c1\",\"post_2018_2018-7-11-electron-nedb.md\":\"3b6797a4\",\"post_2018_2018-7-11-electron-shortcut-cliboard-nativeimage.md\":\"5ee44930\",\"post_2018_2018-7-3-electron-init.md\":\"8b66007e\",\"post_2018_2018-7-4-electron-base.md\":\"3c793fd1\",\"post_2018_2018-7-5-electron-model.md\":\"6e6cf702\",\"post_2018_2018-7-6-electron-menu-shortcut.md\":\"a62700a1\",\"post_2018_2018-7-7-electron-main-render.md\":\"d352cedc\",\"post_2018_2018-7-8-electron-dialog.md\":\"fc50cba3\",\"post_2018_2018-7-8-electron-shell-url-webview.md\":\"a87fc727\",\"post_2018_2018-7-9-electron-ico.md\":\"c39bd6aa\",\"post_2018_2018-8-7-egg-start.md\":\"e7e79807\",\"post_2018_2018-8-8-question.md\":\"797ebe6c\",\"post_2018_2018-8-8-vue-rules.md\":\"a5746d17\",\"post_2018_2018-9-7-js.md\":\"9a4e4d4e\",\"post_2019_2019-10-27-node-pm2.md\":\"8f2313d5\",\"post_2019_2019-10-3-alinode.md\":\"9554b8d8\",\"post_2019_2019-11-16-nodejs-api.md\":\"b944daff\",\"post_2019_2019-4-15-nodejs-tcp-udp-h2.md\":\"13c8f913\",\"post_2019_2019-4-16-vue-cli3+to-plugin.md\":\"cebf025d\",\"post_2019_2019-4-3-sentry-sourcemap.md\":\"acc86577\",\"post_2019_2019-4-3-vuepress-theme.md\":\"e82d2094\",\"post_2019_2019-5-5-restful-graphql.md\":\"2549d917\",\"post_2019_2019-6-1-linux.md\":\"0441d4f2\",\"post_2019_2019-6-12-deploy.md\":\"ef098d91\",\"post_2019_2019-6-19-fontend-performance-optimization.md\":\"e9fccd4a\",\"post_2019_2019-6-27-eslint-test.md\":\"bd81c131\",\"post_2019_2019-6-4-docker.md\":\"a2cdc2e6\",\"post_2019_2019-6-4-nodejs-events.md\":\"2de88a80\",\"post_2019_2019-6-6-css-fixedleft-autoright.md\":\"6962b704\",\"post_2019_2019-6-6-vue-observable.md\":\"f8055807\",\"post_2019_2019-7-13-automated-testing.md\":\"dc7fff88\",\"post_2019_2019-7-6-android-studio-flutter-shortcut.md\":\"17f60f4f\",\"post_2019_2019-7-6-dart-flutter-conf.md\":\"3230a015\",\"post_2019_2019-8-14-nosql.md\":\"1cf5fd04\",\"post_2021_2021-1-3-puppeteer.md\":\"4c94f00f\",\"post_2021_2021-2-23-proxy.md\":\"7c36be8c\",\"post_2021_2021-3-18-appleid.md\":\"8ddc761d\",\"post_2021_2021-6-15-mini.md\":\"05666a55\",\"post_2021_2021-7-23-pixijs.md\":\"b95d0749\",\"post_2021_2021-8-15-resize-observer.md\":\"4ba0de13\",\"post_2021_2021-8-16-min-share.md\":\"013ca983\",\"post_2020_2020-12-31-css.md\":\"722b6fa6\",\"post_2020_2020-3-16-chrome-plugin.md\":\"6501a2b9\",\"post_2020_2020-3-16-vscode-plugin.md\":\"961b1b51\",\"post_2020_2020-3-16-windows-plugin.md\":\"1f353ace\",\"post_2020_2020-3-18-electron-mirror-down.md\":\"ab5d3d5c\",\"post_2020_2020-3-18-electron-updater.md\":\"c7688116\",\"post_2020_2020-3-19-timer.js.md\":\"14c8b7c6\",\"post_2020_2020-3-20-antd-vue-pro.md\":\"9a2580c6\",\"post_2020_2020-3-20-js-how-to-work.md\":\"e38478bf\",\"post_2020_2020-3-29-vuepress-plugin.md\":\"91c1a89b\",\"post_2020_2020-3-31-shituzhengmei.md\":\"11b00859\",\"post_2020_2020-4-1-plupload.md\":\"587d84f1\",\"post_2020_2020-4-2-cmder.md\":\"2e104658\",\"post_2020_2020-4-29-vue-hook-lifecycle.md\":\"a0a9aafe\",\"post_2020_2020-4-4-yiqin.md\":\"1dcf7488\",\"post_2020_2020-4-6-plop.md\":\"d5e34049\",\"post_2020_2020-5-22-ali-oss.md\":\"51cb76e6\",\"post_2020_2020-5-29-axios.md\":\"ea12ce2a\",\"post_2020_2020-6-12-icon.md\":\"05971bed\",\"post_2020_2020-6-20-limit-chars.md\":\"5e0c91e8\",\"post_2020_2020-6-23-charslimit.md\":\"8ba59092\",\"post_2020_2020-6-25-custom-event.md\":\"4f21e6c9\",\"post_2020_2020-6-25-photo.md\":\"860d4695\",\"post_2020_2020-6-29-component.md\":\"6a33d1fd\",\"post_2020_2020-6-5-01-vue-cli.md\":\"6de83173\",\"post_2020_2020-6-5-02-vue-dir.md\":\"60fc7303\",\"post_2020_2020-6-5-03-vue-config.md\":\"a4de14f5\",\"post_2020_2020-6-5-04-vue.webpack.md\":\"73a7bdeb\",\"post_2020_2020-6-5-05-env-mode.md\":\"0ad8955b\",\"post_2020_2020-6-5-06-local-preview.md\":\"1fdf61de\",\"post_2020_2020-6-9-01-plugin.md\":\"d86d3952\",\"post_2020_2020-7-1-vue-api.md\":\"d61e9535\",\"post_2020_2020-7-1-vuex-api.md\":\"e27fd0d6\",\"post_2020_2020-7-13-madel.md\":\"aa2808a9\",\"post_2020_2020-7-14-share.md\":\"9b4315d6\",\"post_2020_2020-7-21-taro.md\":\"48553bac\",\"post_2020_2020-7-23-temp.md\":\"02e1964d\",\"post_2020_2020-7-9-thks-js.md\":\"72987a61\",\"post_2020_2020-8-17.md\":\"b5f0f831\",\"post_2020_2020-8-27-frontend-css1.md\":\"e9fa7268\",\"post_2020_2020-8-28-frontend-css2.md\":\"891ecf04\",\"post_2020_2020-8-29-frontend-js1.md\":\"23f7ba39\",\"post_2020_2020-8-29-frontend-js2.md\":\"25adeb71\",\"post_2020_2020-8-29-frontend-js3.md\":\"a44e3c94\",\"post_2020_2020-8-30-frontend-brower1.md\":\"dc1f1b98\",\"post_2020_2020-8-30-frontend-brower2.md\":\"0705e6f3\",\"post_2020_2020-8-31-frontend-brower3.md\":\"a019d3cc\",\"post_2020_2020-8-31-frontend-brower4.md\":\"88ef8b8e\",\"post_2020_2020-9-1-fw.md\":\"78bcad63\",\"post_2020_2020-9-1-fw2.md\":\"aff579a3\",\"post_2020_2020-9-15-js-arr.md\":\"9f45a83c\",\"post_2020_2020-9-2-proxy.md\":\"76b3628d\",\"post_2020_2020-9-24-interview.md\":\"8129eb80\",\"post_2020_2020-9-3-brower.md\":\"5f258a3a\",\"post_2020_2020-9-5-what-happens.md\":\"f5479f80\",\"post_2020_2020-9-7-recursive.md\":\"94dd0c9a\"}")</script>
+    <script type="module" async src="/assets/app.5f3fb606.js"></script>
+  </body>
+</html>
