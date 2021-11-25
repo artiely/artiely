@@ -1,4 +1,9 @@
-## Artiely
+### Hi there, this is Artiely 👋
+
+- 🔭 I’m currently working on Vue, React and Flutter development;
+- 💬 Ask me about anything tech related, I am happy to help;
+- 📫 It's OK to reach me through the email on this page;
+- ⚡ Fun fact: I wanna be a game developer 😃
 
 ![](https://github-readme-stats.vercel.app/api?count_private=true&username=artiely&show_icons=true)
 
