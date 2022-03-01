@@ -12,3 +12,7 @@
 ![npm stats](https://img.shields.io/endpoint?url=https%3A%2F%2Fraw.githubusercontent.com%2Fartiely%2Fnpm-statistics%2Fmaster%2Fstats.json)
 
 
+<a href="https://github.com/artiely/artiely.github.io">
+  <!-- 主页卡片之「置顶仓库」 -->
+  <img align="center" src="https://github-readme-stats.vercel.app/api/pin/?username=artiely&repo=artiely.github.io" alt="artiely blog" />
+</a>
