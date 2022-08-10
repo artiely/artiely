@@ -1,6 +1,6 @@
 ### Hi there, this is Artiely 👋
 
-- 🔭 I’m currently working on Vue, React and Flutter development;
+- 🔭 I’m currently working on Vue, React,unity and Flutter development;
 - 💬 Ask me about anything tech related, I am happy to help;
 - 📫 It's OK to reach me through the email on this page;
 - ⚡ Fun fact: I wanna be a game developer 😃
